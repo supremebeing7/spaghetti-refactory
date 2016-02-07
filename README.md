@@ -8,7 +8,5 @@
 
 ## License
 
-Built with [Poole](http://demo.getpoole.com).
-Open sourced under the [MIT license](LICENSE.md).
-
-<3
+Built with [Poole](http://demo.getpoole.com) and [Jekyll](https://jekyllrb.com/).
+Served over [Github Pages](https://pages.github.com/).
