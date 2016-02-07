@@ -1,0 +1,32 @@
+# Permalinks
+permalink:           pretty
+
+# Setup
+title:               The Spaghetti Refactory
+tagline:             Established 2015
+url:                 http://supremebeing7.github.io/spaghetti-refactory
+paginate:            1
+baseurl:             /spaghetti-refactory
+
+# Assets
+#
+# We specify the directory for Jekyll so we can use @imports.
+sass:
+  sass_dir:          _sass
+  style:            :compressed
+
+# About/contact
+author:
+  name:              Mark J. Lehman
+  url:               https://markjlehman.com
+  email:             markopolo@gmail.com
+
+# Custom vars
+version:             2.0.0
+github:
+  repo:              https://github.com/supremebeing7/spaghetti-refactory
+
+# Gems
+gems:
+  - jekyll-paginate
+  - jekyll-gist
