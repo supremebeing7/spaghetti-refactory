@@ -1,0 +1,13 @@
+---
+layout: post
+title: Enumerating in Ruby like a BOSS
+date: '2015-05-26T00:14:00.001-07:00'
+author: Mark J. Lehman
+tags:
+- ruby
+modified_time: '2015-08-21T10:06:46.805-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-5959571792955071112
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/05/enumerating-in-ruby-like-boss.html
+---
+
+The other day I wanted to run <code>collect</code> on an array, but I needed the indexes of the elements collected as well. Essentially, I wanted an array of hashes with the index as the key and the element as the value. I could have sloppily hacked together something like this:<br /><br /><pre><code>my_new_array = []<br />my_array.each_with_index do |element, index|<br />  my_new_array &lt;&lt; { index =&gt; element }<br />end<br />return my_new_array<br /></code></pre><pre><code><br /></code></pre>When doing some Googling, I found out that Ruby allows enumerator method chaining - in other words, I can take an array and run something like this:<br /><br /><pre><code>my_array.each_with_index.collect do |element, index|<br />  { index =&gt; element }<br />end<br /></code></pre><br />I love my <code>collect</code> method, so anytime I can use it, I will. And apparently, in Ruby, any <a href="http://ruby-doc.org/core-2.2.2/Enumerable.html">enumerable</a> can be called on any other enumerable.

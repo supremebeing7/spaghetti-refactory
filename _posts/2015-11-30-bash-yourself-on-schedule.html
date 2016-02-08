@@ -1,0 +1,14 @@
+---
+layout: post
+title: Bash yourself on a schedule!
+date: '2015-11-30T22:04:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- bash
+- cron
+modified_time: '2015-12-26T22:05:19.549-08:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-113802030272920669
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/11/bash-yourself-on-schedule.html
+---
+
+To run terminal tasks on a schedule, you have to use something called the “crontab.” It is a file that you edit to include the bash code to run and the times and days to run it.<br /><br />There are some interesting rules/best practices around editing the crontab.<br /><br />To start, you have to create a crontab by entering <code>crontab -e</code>. Open and edit it in your favorite editor and save.<br /><br />If you already have a crontab file that you want to edit, you actually shouldn’t. Rather, get a “copy” of your crontab file by doing <code>crontab -l &gt; new_crontab_copy</code>. Then open the <code>new_crontab_copy</code> in your editor, edit and save.<br /><br />For either of the above options, “install” your crontab file by giving it to crontab:<br /><code>crontab my-crontab</code><br /><br />(This post won’t be giving any advice on actually writing cron jobs - for that you can check out this <a href="http://www.adminschoice.com/crontab-quick-reference">Crontab quick reference</a>.)

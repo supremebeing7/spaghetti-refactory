@@ -1,0 +1,15 @@
+---
+layout: post
+title: Check if array contains any element of another array
+date: '2015-07-22T23:44:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- ruby
+- optimization
+- data structures
+modified_time: '2015-08-21T23:44:45.868-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-5355873975167082531
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/07/check-if-array-contains-any-element-of.html
+---
+
+I wanted to check if there were common elements in two separate arrays. Seems simple enough, but I was trying to find a way to do this without looping over both arrays in some kind <code>each</code> jungle:<br /><pre><code><br /></code></pre><pre><code>wizard_of_oz_characters = ['tin man', 'scarecrow', 'lion']<br />batman_villains = ['scarecrow', 'joker', 'bane']<br />wizard_of_oz_characters.each do |character|<br />  batman_villains.each do |villain|<br />    return false if character == villain<br />  end<br />end<br /></code></pre><br />I was able to pare it down to something simpler:<br /><pre><code><br /></code></pre><pre><code>wizard_of_oz_characters.any? {|character| batman_villains.include?(character) }<br /></code></pre><br />…but at it’s core, it’s still looping through and checking each record in sequence. Not what I was after.<br /><br />Then I found a <a href="http://stackoverflow.com/questions/3941945/array-include-any-value-from-another-array/3941975#3941975">StackOverflow answer</a> which had exactly what I wanted:<br /><pre><code><br /></code></pre><pre><code>(wizard_of_oz_characters &amp; batman_villains).empty?<br /></code></pre><br />This returns the intersection of the two arrays (<code>['scarecrow']</code>), then asks if it is empty. Perfect! And the syntax is kinda fun too.<br /><br />But what is it actually doing? One of the comments on the SO answer said this is faster because it’s linear rather than quadratic, and although it has been a few years since high school Geometry, I still know quadratic is much more intensive than linear. However, I wanted to find out more.<br /><br />Turns out, the <code>&amp;</code> operator is treating the Arrays like <a href="http://ruby-doc.org/stdlib-2.1.2/libdoc/set/rdoc/Set.html">Sets</a>, an entirely different data type in Ruby. From the Ruby docs themselves, a Set is a “hybrid of Array’s intuitive inter-operation facilities and Hash’s fast lookup.”<br /><br />So you get the syntax of an Array with the speed of a Hash. And you get this fun and terse syntax. I’m on board with that.

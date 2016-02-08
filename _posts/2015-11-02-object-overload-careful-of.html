@@ -1,0 +1,18 @@
+---
+layout: post
+title: Object overload! Careful of instantiating objects in Ruby
+date: '2015-11-02T21:03:00.003-08:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+- debugging
+- memory
+- activerecord
+- sql
+modified_time: '2015-11-02T21:04:24.226-08:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-9108674261063766899
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/11/object-overload-careful-of.html
+---
+
+Wowzers, I just tackled a major memory issue in an app I’ve been developing, and it was nearly all due to rampant over-instantiation of ActiveRecord objects.<br /><br />Here’s the TL;DR: Use SQL queries whenever possible to grab info from the database, rather than using Ruby code.<br /><br />Now for the longer version. First, I knew I had a memory issue because my server was crashing and it was showing up the logs saying that memory could not be allocated. But I had to find out what the issue was first.<br /><br /><a href="https://github.com/noahd1/oink">Oink</a> to the rescue. It’s a handy little Ruby gem that will log how much memory and how many ActiveRecord objects are instantiated for each request.<br /><br />I installed Oink, ran through a few requests that seemed kinda slow, and lo and behold, I found the problem: One of my requests was generating 1500 objects! <br /><br />Here’s what was happening. I was looping through an array of IDs, and for each one I was calling <br /><pre><code><br /></code></pre><pre><code>account.users.order(:id).select{ |user| user.id == id }.first<br /></code></pre><br />Don’t laugh. I have a baby at home, I was sleep deprived, I don’t know why I did it this way. But yes, this is instantiating all User objects in an account, and it’s doing it <strong><em>every single time it iterates through the loop</em></strong>. Hence, 1500 objects instantiated per request.<br /><br />This was easily solved by a simple <code>find_by_id</code> with the id from the array. <br /><br />That took me down to only one instance of each User object, which is still not fantastic. So, I ended up using one of my favorite ARel methods,  <code>pluck</code>, to get just the attributes of the users that I need without actually creating the User objects.<br /><br />That’s the ticket! From 1500 User objects to 0, this should significantly help with speed and memory usage. I ended up combing through the rest of the app and finding a few other spots where object instantiation was a bit out of control, though not nearly as bad as that one. <br /><br />It became a kind of game - and in the end, I’d say I won.<br /><br />Thanks to <a href="https://blog.engineyard.com/2009/thats-not-a-memory-leak-its-bloat">Engine Yard</a> for the great tips. Lots more in their linked post.

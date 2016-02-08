@@ -1,0 +1,14 @@
+---
+layout: post
+title: Discrimination in Rspec
+date: '2015-03-02T16:15:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+modified_time: '2015-08-21T10:08:38.667-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-3603075522017803597
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/03/discrimination-in-rspec.html
+---
+
+I'm fully against discrimination in almost all its forms. I say "almost" because, when it comes to testing with rspec in Ruby, I'm fully in favor of it. Here's why: I can tag tests in rspec and run only those tests.<br /><br />This has a lot of cool use cases, but I'm using it for running rspec tests in parallel on my CI service. For example:  <br /><pre><code><br />  describe 'get averages but takes a long time', slow: true do<br />    it 'gets average foo' do<br />      ....<br />    end<br /><br />    it 'gets average bar' do<br />      ...<br />    end<br />  end<br /></code></pre><br />Then, to run only tests tagged as "slow", run rspec with this command:  <br /><pre><code><br /></code></pre><pre><code>  rspec --tag slow</code></pre><br />Another option is to have rspec automatically NOT run certain examples, such as "slow":  <br /><pre><code><br />  RSpec.configure do |c|<br />    c.filter_run_excluding slow: true <br />  end<br /></code></pre><br />Then, to run all examples:  <br /><pre><code>  <br />  RSpec.configure do |c|<br />    c.filter_run_excluding slow: true unless ENV[‘ALL’]<br />  end<br /></code></pre><br />Then run rspec with this command:  <br /><pre><code><br /></code></pre><pre><code>  ALL=1 rspec</code></pre><br />I can also run all tagged tests without doing any rspec configuration using this command:<br /><pre><code><br /></code></pre><pre><code>  rspec . --tag type:special<br /></code></pre><br />Or I can run all tests EXCEPT certain tagged tests using this command:  <br /><pre><code><br /></code></pre><pre><code>  rspec . --tag ~type:special<br /></code></pre><br />Thanks to <a href="http://stackoverflow.com/a/12863729/3477163">Myron Marston on StackOverflow</a> for this nifty trick.    

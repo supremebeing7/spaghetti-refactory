@@ -1,0 +1,16 @@
+---
+layout: post
+title: Hack your Rspec setup using tags
+date: '2015-06-18T10:04:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- rspec
+- rails
+- ruby
+- capybara
+modified_time: '2015-08-21T22:53:25.515-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-9049844699416060474
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/06/hack-your-rspec-setup-using-tags.html
+---
+
+I ran into an issue in rspec the other day where I had a <code>before</code> block to setup about 10 different tests, but I needed to write one more that was similar enough that it belonged in the same <code>context</code> but it required slightly different setup so the <code>before</code> block I already defined.<br /><br />What to do? I could break out the existing tests into a nested <code>context</code> block and use the setup there, then do another nexted <code>context</code> block for my new test, but I really didn’t want to do that because all these tests should belong in the same context. I just wanted to skip the <code>before</code> block on one specific test.<br /><br />Rspec tags to the rescue!<br /><br />In this case, my new test was a JS test and all others were not (which is partly why the setup was different. So, the test was already tagged <code>js: true, and in my</code>before` block, I modified it like so:<br /><pre><code><br /></code></pre><pre><code>before(:each) do |test|<br />  # Run this only on tests NOT tagged with js: true<br />  if test.example.metadata[:js] == nil<br />    # Existing setup code<br />  end<br />end<br /></code></pre><br />Works like a charm, and I still have all my related tests within the same context like I wanted.<br /><br /><i>Hat Tip: <a href="http://stackoverflow.com/questions/27864080/how-can-i-skip-some-setup-for-specific-rspec-tags">http://stackoverflow.com/questions/27864080/how-can-i-skip-some-setup-for-specific-rspec-tags</a></i>

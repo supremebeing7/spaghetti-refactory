@@ -1,0 +1,14 @@
+---
+layout: post
+title: Beware reserved ENV names in Rails
+date: '2015-05-19T14:24:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+modified_time: '2015-08-21T10:08:38.660-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-2804646561016165488
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/05/beware-reserved-env-names-in-rails.html
+---
+
+Not all environment variable names are created equal.<br /><br />For example, if you are using Ruby on Rails, do not declare a <code>VERSION</code> environment variable, there is already one a reserved. The reserved <code>VERSION</code> envar is used by Rails in migrating database changes, so if it is changed at all, you will have problems when making new migrations.<br /><br />That was a fun error to debug...

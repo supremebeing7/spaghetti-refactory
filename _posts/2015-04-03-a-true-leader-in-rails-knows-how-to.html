@@ -1,0 +1,14 @@
+---
+layout: post
+title: A true leader (in Rails) knows how to delegate
+date: '2015-04-03T10:15:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+modified_time: '2015-08-21T10:08:38.701-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-7500372747560944427
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/04/a-true-leader-in-rails-knows-how-to.html
+---
+
+When building a larger Rails app with lots of associations, I've run into an issue a few times where one object belongs to another, and I want to get the value of the parent object from the child object. This is going to get very esoteric very quickly, so let's get an example going. <br /><br />Say I have a Course model with an associated CourseName (<code>belongs_to :course_name</code>), because I want to be able to create multiple Courses with the same name but different times and dates. Since Course does not have a name, any time I find a Course object and want to show the name, I have to call <code>course.course_name.name</code>. Previously, I've written a shortcut method on Course: <br /><pre><code><br />  def name<br />    course_name.name<br />  end<br /></code></pre><br />That isn't a huge issue, but if there are a lot of CourseName methods or attributes that I want to access directly from Course, it starts to be a pain having to define a new shortcut method for each. <br /><br />This is where Rails' <code>delegate</code> module comes in very handy. Here's what the above example would look like using <code>delegate</code>: <br /><pre><code><br />class Course &lt; ActiveRecord::Base<br />  belongs_to :course_name<br />  delegate :name, to: :course_name<br />end<br /></code></pre><br />I've delegated the name method that I would have had to define in Course to the CourseName model instead, so when I am working with a <code>course</code> object and I call <code>course.name</code>, it will look for the delegated method in the model that it was delegated to, based on the association. <br /><br />This delegation stuff is pretty powerful and extendable <a href="http://apidock.com/rails/Module/delegate">according to the docs</a>, so I'm looking forward to playing around a bit with all the other stuff that can be done. 

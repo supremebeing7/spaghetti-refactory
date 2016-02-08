@@ -1,0 +1,14 @@
+---
+layout: post
+title: Touch objects in a has_and_belongs_to_many association
+date: '2015-02-26T16:01:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+modified_time: '2015-08-21T10:08:38.643-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-1970094997822043772
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/02/touch-objects-in-hasandbelongstomany.html
+---
+
+On <code>has_many</code> relations, there is a simple way to update all associated objects - just add <code>touch: true</code> and the <code>updated_at</code> field on all associated objects will get updated. This is a major issue with Russian Doll caching, because this is was expires the cache and makes sure the page shows the most recent changes.   However <code>has_and_belongs_to_many</code> (HABTM) does not have a <code>:touch</code> option. It must be done manually. So, here's a quick and easy way to do this:  <pre><code><br />  class Category<br />    before_save :touch_videos<br /><br />    def touch_videos<br />      videos.touch<br />    end<br />  end<br /><br />  class Video<br />    def self.touch<br />      update_all(updated_at: Time.now)<br />      # or, if you need validations to run for some reason<br />      find_each { |video| video.touch }<br />    end<br />  end<br /></code></pre>

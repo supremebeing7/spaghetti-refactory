@@ -1,0 +1,14 @@
+---
+layout: post
+title: Literally the coolest way to build an array
+date: '2015-12-14T23:13:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+modified_time: '2015-12-26T23:14:44.430-08:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-3056161514067136744
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/12/literally-coolest-way-to-build-array.html
+---
+
+One of <a href="https://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Literals#The_.25_Notation">Ruby’s literal syntax shorthands</a>, <code>%i</code> essentially loops over each word, converts to a symbol and adds it to an array. For example:<br /><pre class="prettyprint"><code class=" hljs haml"><span class="hljs-tag"><br /></span></code></pre><pre class="prettyprint"><code class=" hljs haml"><span class="hljs-tag">%<span class="hljs-title">i</span>(dog cat mouse)</span><br /># =&gt; [:dog, :cat, :mouse]</code></pre><br />Caveat: This syntax was added in Ruby 2.0, so don’t go trying it in any previous version.

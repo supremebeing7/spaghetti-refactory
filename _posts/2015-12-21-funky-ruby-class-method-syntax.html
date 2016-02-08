@@ -1,0 +1,15 @@
+---
+layout: post
+title: Funky Ruby Class Method Syntax
+date: '2015-12-21T23:17:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+- metaprogramming
+modified_time: '2015-12-26T23:20:40.674-08:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-3720759093811998158
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/12/funky-ruby-class-method-syntax.html
+---
+
+I’ve run across this syntax a few different times but never grasped how it worked, and I guess never cared enough to look it up. Turns out it’s dead simple.<br /><br />This:<br /><pre class="prettyprint"><code class=" hljs ruby"><span class="hljs-class"><span class="hljs-keyword"><br /></span></span></code></pre><pre class="prettyprint"><code class=" hljs ruby"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Person</span>  </span><br />  <span class="hljs-function"><span class="hljs-keyword">def</span> </span><span class="hljs-keyword">self</span>.species<br />    <span class="hljs-string">"Homo Sapien"</span><br />  <span class="hljs-keyword">end</span><br /><span class="hljs-keyword">end</span></code></pre><br />is equivalent to this:<br /><pre class="prettyprint"><code class=" hljs ruby"><span class="hljs-class"><span class="hljs-keyword"><br /></span></span></code></pre><pre class="prettyprint"><code class=" hljs ruby"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Person</span>  </span><br />  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-inheritance">&lt;</span><span class="hljs-inheritance">&lt; <span class="hljs-parent">self</span></span></span><br />    <span class="hljs-function"><span class="hljs-keyword">def</span> </span>species<br />      <span class="hljs-string">"Homo Sapien"</span><br />    <span class="hljs-keyword">end</span><br />  <span class="hljs-keyword">end</span><br /><span class="hljs-keyword">end</span></code></pre><br />Thanks to <a href="http://yehudakatz.com/2009/11/15/metaprogramming-in-ruby-its-all-about-the-self/">Yehuda Katz</a> for finally clearing that up for me. 

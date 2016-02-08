@@ -1,0 +1,17 @@
+---
+layout: post
+title: No return value in rails console
+date: '2016-01-11T11:35:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+- tricks
+- console
+- command line
+modified_time: '2016-01-21T11:36:16.341-08:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-1927852935691016856
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2016/01/no-return-value-in-rails-console.html
+---
+
+A quick tip when working in rails console. If you're testing commands to run and don't want the console to output the return value, just append a semicolon to your ruby code.<br /><code></code><br /><pre><code>  User.all<br />  # =&gt; [#&lt;user:0x007fd72a408630&gt; {:id =&gt; 1, :name =&gt; "Mr. T", ...}, tons and tons of other records]<br />  User.all;<br />  # =&gt; nothing!<br /></code></pre><br />OK, so that's a contrived example, but this really comes in handy<br /><br /><ul><li>when creating records, or&nbsp;</li><li>if you need to update several records in one shot and don't want to see the return values, or</li><li>POSTing to an external API and avoiding all the cruft that comes in the response</li></ul>

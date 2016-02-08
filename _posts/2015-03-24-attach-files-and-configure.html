@@ -1,0 +1,14 @@
+---
+layout: post
+title: Attach files and configure `delivery_method` in Rails ActionMailer
+date: '2015-03-24T12:55:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+modified_time: '2015-08-21T10:08:38.713-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-8705729177290959679
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/03/attach-files-and-configure.html
+---
+
+Today is a twofer!  <br /><h3>Attachments in ActionMailer for Rails</h3>First, I never tried sending attachments in a Rails mailer before, but it is incredibly easy. Just throw this line into your mailer method:  <br /><pre><code><br />  attachments["screenshot.png"] = File.read("#{Rails.root}/public/images/screenshot.png")<br /></code></pre><br />And of course, replace the file name in the <code>attachments</code> hash with what you want the attachment name to be, and then replace the path in the <code>File.read</code> with your attachment's path.  <br /><h3>Specify <code>:delivery_method</code> for individual mailer methods</h3>This part can come in handy if you have a specific mailer method that you want to actually send in the testing environment, instead of just outputting to a file or to the log. The specific use case I have for this is when I have finicky intermittent test failures when running our test suite on my CI service (something I've talked about elsewhere). This method grabs the screenshot that was taken when the error occurred, and it emails it to the email passed in:  <br /><pre><code><br />  def error_email(email, public_image=nil)<br />    attachments["screenshot.png"] = File.read("#{Rails.root}/public/images/screenshot.png")<br />    mail(to: email, subject: 'Capybara error', delivery_method: :smtp)    <br />  end<br /></code></pre><br />Since this is happening on my CI server and I can't look at any tmp files it creates, I need the email to actually send via SMTP, but I still want every other mailer method to deliver via the <code>:file</code> method because I don't want to get a boatload of emails every time the test suite runs.  <br /><br />Pretty nifty! Thanks to <a href="http://stackoverflow.com/a/6746374/3477163">jankubr on StackOverflow</a> for this one.

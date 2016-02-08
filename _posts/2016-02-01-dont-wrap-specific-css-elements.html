@@ -1,0 +1,15 @@
+---
+layout: post
+title: Don't wrap specific CSS elements
+date: '2016-02-01T21:23:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- css
+- tricks
+- responsive design
+modified_time: '2016-02-01T21:23:04.011-08:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-742299529149984952
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2016/02/dont-wrap-specific-css-elements.html
+---
+
+Another quickie quickie CSS tricky:<br /><br />Let’s say you’re trying to make a site responsive to many different screen sizes, like you have to these days. You have a block of text that needs to wrap, but you also have a word or number you don’t want to get wrapped. The best example for this I can think of is a phone number – you don’t want it display weird like this:<br /><br /><pre>    Call Jenny today! <span class="hljs-number">800</span>-<span class="hljs-number">867</span>-<br />    <span class="hljs-number">5309</span><br /></pre><br />Wrap that word or number or whatever in a <code>span</code> and style it with <code>"white-space: nowrap;"</code>. Then, that particular element will wrap as one piece:<br /><pre><br /></pre><pre>    Call Jenny today! <br />    <span class="hljs-number">800</span>-<span class="hljs-number">867</span>-<span class="hljs-number">5309</span><br /></pre>

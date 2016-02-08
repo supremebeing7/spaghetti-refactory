@@ -1,0 +1,17 @@
+---
+layout: post
+title: URL Encoding and Silly Safari
+date: '2015-10-12T19:40:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- ios
+- rails
+- ruby
+- validations
+- api
+modified_time: '2015-10-28T19:41:12.743-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-4481717440738308557
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/10/url-encoding-and-silly-safari.html
+---
+
+I have a web app that also acts as an API for an iOS, and I ran into a tricky situation. One of my models on the web app takes a URL as input, and it validates it using the <a href="https://github.com/perfectline/validates_url">validates_url gem</a>. However, some URLs when visited from within the iOS app would give a Webkit error and show as invalid.<br /><br />After some head scratching, it turned out that those URLs had encoding issues that were handled fine by all modern browsers except Safari, the default browser on iOS. For example, something with curly brackets like "<a href="http://www.example.com/?ID=%7B12345%7D">http://www.example.com?ID={12345}</a>" would work in most browser but not in Safari/iOS.<br /><br />To get around this, in addition to using <code>validates_url</code>, I had to escape each URL during validation using <code>URI.escape(url)</code>. The above URL would then become "<a href="http://www.example.com/?ID=%7B12345%7D">http://www.example.com?ID={12345}</a>". (Notice that the left curly bracket changed to %7B, the right turned to %7D - check out this <a href="http://www.w3schools.com/tags/ref_urlencode.asp">HTML URL Encoding Reference</a> for details)<br /><br />But wait, there’s more!<br /><br />It turns out that on subsequent saves, the URL would be escaped again, and it wouldn’t recognize the %7B and %7D as encoding, it would just see the % sign as an invalid character needing escape. So, on the second save, the same URL would be transformed again into "<a href="http://www.example.com/?ID=%257B12345%257D">http://www.example.com?ID=%7B12345%7D</a>". Notice the “25” inserted in there twice?<br /><br />The fix ended up being something that reads very strange and seems unnecessary, but that works perfectly:<br /><pre><code><br /></code></pre><pre><code>URI.escape(URI.unescape(url))<br /></code></pre><br />So, if a URL is already escaped, it unescapes it first, then re-escapes it. If the URL is not escaped, then unescaping it does nothing, then it gets escaped as it should.<br /><br />If there’s a better way to do this, I haven’t found it, and am open to suggestions.

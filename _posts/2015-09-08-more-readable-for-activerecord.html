@@ -1,0 +1,14 @@
+---
+layout: post
+title: More readable for ActiveRecord statements using Placeholder Conditions
+date: '2015-09-08T13:58:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- ruby
+- activerecord
+modified_time: '2015-09-22T13:58:28.501-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-7260790083642455433
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/09/more-readable-for-activerecord.html
+---
+
+Here’s another readability hack for Ruby ActiveRecord code. It’s called “Placeholder Conditions.”<br /><br />This:<br /><pre><code><br /></code></pre><pre><code>where("start_time &lt; :time", time: Time.now)<br /></code></pre><br />works the same as this<br /><pre><code><br /></code></pre><pre><code>where("start_time &lt; ?", Time.now)<br /></code></pre><br />The second is more terse, but if you are inserting a lot of values into the WHERE statement, then the first is nice for readability.<br /><br />Source: <a href="http://guides.rubyonrails.org/active_record_querying.html#placeholder-conditions" rel="nofollow" target="_blank">Ruby on Rails Guides</a>

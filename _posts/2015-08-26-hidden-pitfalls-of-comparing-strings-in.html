@@ -1,0 +1,13 @@
+---
+layout: post
+title: Hidden pitfalls of comparing strings in Java
+date: '2015-08-26T18:50:00.001-07:00'
+author: Mark J. Lehman
+tags:
+- java
+modified_time: '2015-08-26T18:50:07.635-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-1047350719856470685
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/08/hidden-pitfalls-of-comparing-strings-in.html
+---
+
+I’ve been learning some Java to get into Android coding. It is certainly more verbose compared to Ruby. As a simple example (which will lead me into the topic at hand), let’s say I have a variable called <code>word</code> with the string “widget” stored. If I want just the first letter of the word:<br /><pre><code><br /></code></pre><pre><code># Ruby<br />word[0]<br /><br />// Java<br />word.substring(0,1);<br /></code></pre><br />What’s more, the Ruby method above returns a normal String object that can be acted on like any other string. So, if in Ruby I wanted to check if the first letter in the word was “w”:<br /><pre><code><br /></code></pre><pre><code># Ruby<br />word[0] == "w"<br /></code></pre><br />Based on that, I figured I could do something similar in Java:<br /><pre><code><br /></code></pre><pre><code>// Java<br />word.substring(0,1) == "w";<br /></code></pre><br />Fail! And it’s the worst kind of fail - it doesn’t even give an error! It just returns <code>false</code>, even though I know that <code>word.substring(0,1)</code> will return “w”.<br />When I tried a few combinations of things in <code>javarepl</code>, I got some interesting results:<br /><pre><code><br /></code></pre><pre><code>String letter = word.substring(0,1);<br />letter == "w";<br />// ERROR: illegal start of expression<br />// = "w";<br />// ^<br /></code></pre><br />and<br /><pre><code><br /></code></pre><pre><code>"w" == "w"<br />// java.lang.Boolean res9 = true<br /></code></pre><br />but<br /><pre><code><br /></code></pre><pre><code>word.substring(0,1) == "w";<br />// java.lang.Boolean res10 = false<br /></code></pre><br />Really strange. My guess is that in the first example, it’s trying to assign “w” even though I’m attempting to use the equality operator. But if that’s true, I have no idea why it’s doing what it’s doing in the other two.<br /><br />Just for posterity, the way to get the third example to return <code>true</code> like it should is to use the <code>equals</code> method:<br /><pre><code><br /></code></pre><pre><code>word.substring(0,1).equals("w");<br />// java.lang.Boolean res11 = true<br /></code></pre>

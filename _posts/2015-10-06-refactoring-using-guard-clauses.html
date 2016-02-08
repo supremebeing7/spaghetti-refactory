@@ -1,0 +1,14 @@
+---
+layout: post
+title: Refactoring using guard clauses
+date: '2015-10-06T19:09:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- ruby
+- style
+modified_time: '2015-10-28T19:09:46.071-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-8909878465102875542
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/10/refactoring-using-guard-clauses.html
+---
+
+This post is almost purely about code style, but it’s an approach to coding and refactoring that I just found and really enjoy for its simplicity and readability.<br /><br />The secret sauce to this approach is called a <a href="http://refactoring.com/catalog/replaceNestedConditionalWithGuardClauses.html"><strong>guard clause</strong></a>.<br /><br />Say I have a method that I’m writing where I want to return one thing is a condition is true, another thing if it’s false. The way I used to write the code is exactly how I wrote that sentence:<br /><br /><pre><code>def do_something_conditionally(fact)<br />    if fact == true<br />        fact<br />    else<br />        false<br />    end<br />end<br /></code></pre><pre><code><br /></code></pre>Pretty standard, right? Now check out the same example with a guard clause:<br /><br /><pre><code>def do_something_conditionally(fact)<br />    return false unless fact == true<br />    fact<br />end<br /></code></pre><pre><code><br /></code></pre>We saved a couple lines of code, which is nice (although I could’ve saved more turning the conditional into ternary (fact == true ? fact : false)). However, the big gain from doing it this way is that it’s easier to read. Disagree?<br /><br />It may help to have a more complex example, perhaps using nested conditionals:<br /><br /><pre><code>def account_type<br />    if has_problems?<br />        type = "problems"<br />        if is_past_due?<br />            type = "past due"<br />            if is_weeks_past_due?<br />                type = "delinquent"<br />            end<br />        end<br />    else<br />        type = "normal"<br />    end<br />    type<br />end<br /></code></pre><pre><code><br /></code></pre>…and now with guard clauses:<br /><br /><pre><code>def account_type<br />    return "delinquent" if is_weeks_past_due?<br />    return "past due" if is_past_due?<br />    return "problems" if has_problems?<br />    "normal"<br />end<br /></code></pre><pre><code><br /></code></pre>We’ve saved more lines of code, this time something we could not have easily change to ternary, and it’s harder to argue that this isn’t more readable now.<br /><br />If all of that isn’t convincing enough, check out the quasi-official <a href="https://github.com/bbatsov/ruby-style-guide#no-nested-conditionals">Ruby Style Guide</a>, because it also recommends using guard clauses when possible.

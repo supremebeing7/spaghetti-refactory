@@ -1,0 +1,15 @@
+---
+layout: post
+title: Take control of your rspec test suite, Part 1
+date: '2015-06-24T11:37:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- rspec
+- optimization
+- capybara
+modified_time: '2015-08-21T11:38:08.540-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-5778817429115620162
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/06/take-control-of-your-rspec-test-suite.html
+---
+
+Let me tell you a little story about how I took our test suite from 25 minutes run time to just under 3 minutes while still testing all the same functionality.<br /><br />A large application can generate a very unwieldy test suite. On one project I worked on, the test suite took 45 minutes to run on our CI, and when I tried to run the whole thing locally, I stopped it at the 1 1/2 hour mark when it looked like it still had a ways to go.<br /><br />I can live with a suite like that for awhile, because I just run the tests that are specific to the work I’m doing. However, there are times when I’m working on something that could potentially affect several different places in the app, and I may not know exactly where those places are, so I have to run the whole suite. Waiting 45 minutes to be able to finish my feature is NOT cool, especially since that will likely have to happened a few times to ensure all tests are fixed.<br /><br />On that project, I was limited with what I could do on the test suite due to budget constraints. However, on another project I worked on, our test suite took 25 minutes to run, but the project manager saw the financial benefit of trimming this number down and so let me spend some time fixing our tests.<br /><br />I’ll be writing a few different posts on this topic. Step 1 is the easiest part: gathering data. Often, only a handful of tests take the longest to run, so we want to find out which of our tests are “losers” and try to refactor them into “winners.”<br /><br />Thankfully, rspec gives us a command to do just that:<br /><pre><code><br /></code></pre><pre><code>rspec --profile<br /># or rspec -p<br /></code></pre><br />This will run the entire suite, then list out the 10 examples that took the longest to run. If you want more than 10, you can specify the number you want as an argument, i.e. <code>rspec -p 25</code>.<br /><br />You can also use this when running on certain test groups. So, if you wanted to find out the 17 slowest feature specs:<br /><pre><code><br /></code></pre><pre><code>rspec -p 17 spec/features<br /></code></pre><br />Now you know the worst offenders. Stay tuned for part 2 where we delve into how to fix them up.

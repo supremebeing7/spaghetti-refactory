@@ -1,0 +1,16 @@
+---
+layout: post
+title: Testing CSV exports/downloads in Ruby on Rails with Capybara
+date: '2015-05-06T14:42:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- csv
+- rails
+- ruby
+- capybara
+modified_time: '2015-08-21T10:13:29.820-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-4950155164494959031
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/05/testing-csv-exportsdownloads-in-ruby-on.html
+---
+
+As low-tech as CSV is, it doesn't appear to be going away anytime soon. So, I've run into a few different Ruby on Rails projects that want import from/export to CSV capability, and because I like tests, I wanted to make sure I could test not only that the CSV is exported but that the content of the CSV is correct.<br /><br />Here's how to do this using Capybara and Rspec:<br /><br />First, switch the driver to something that works (webkit or rack_test, but not selenium). To do this, you can run this within your code block:<br /><pre><code><br /></code></pre><pre><code>Capybara.javascript_driver = :webkit<br /></code></pre><br />Just make sure to change it back to your preferred driver after you're done. Another option is to do this in your <code>spec_helper.rb</code>:<br /><pre><code><br /></code></pre><pre><code>config.before(:each, webkit: true) do<br />    Capybara.javascript_driver = :webkit<br />end<br /><br />config.after(:each, webkit: true) do<br />    Capybara.javascript_driver = :selenium <br />    # or whatever your preferred driver is<br />end<br /></code></pre><br />Then just tag any CSV tests with the <code>webkit: true</code> tag.<br />(Thanks to <a href="http://stackoverflow.com/a/10509285/3477163">Kevin Bedell on StackOverflow for this one</a>.)<br /><br />Once you get the driver configured properly, you can check the headers and the actual content of the CSV trivially:<br /><pre><code><br /></code></pre><pre><code>click_on 'Download as CSV'<br /># Make sure the page is a CSV<br />header = page.response_headers['Content-Disposition']<br />expect(header).to match /^attachment/<br />expect(header).to match /filename="my_file.csv"$/<br /><br /># Then check the content<br />MyModel.all.each do |record|<br />  expect(page).to have_content record.field1<br />  expect(page).to have_content record.field2<br />end<br /></code></pre><br />(Props to <a href="http://stackoverflow.com/a/21587707/3477163">Andrew on StackOverflow for this bit</a>.)

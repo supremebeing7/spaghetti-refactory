@@ -1,0 +1,14 @@
+---
+layout: post
+title: Rails' flash vs flash.now
+date: '2015-03-25T21:10:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+modified_time: '2015-08-21T10:08:38.697-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-7145571938900712594
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/03/rails-flash-vs-flashnow.html
+---
+
+I've seen these two things on several projects and never knew the difference. Until now!<br /><br />&nbsp;Boiled down to the very basics, use <code>flash.now</code> before a <code>render</code> call, and <code>flash</code> before a <code>redirect_to</code>.<br /><br />&nbsp; <code>flash</code> persists across an action, so if you use <code>flash</code> for a <code>render</code>, the flash message will show up on the rendered page AND the next page after clicking a link. Conversely, if you run <code>flash.now</code> on a <code>redirect_to</code>, you won't even see the message because the <code>flash.now</code> doesn't persist across requests.&nbsp; <br /><br />Thanks to these resources:<br /><a href="http://trace.adityalesmana.com/2010/10/difference-between-flash-and-flash-now-in-ruby/">http://trace.adityalesmana.com/2010/10/difference-between-flash-and-flash-now-in-ruby/</a><br /><a href="http://ionrails.com/2009/09/19/flashnotice-vs-flash-nownotice/">http://ionrails.com/2009/09/19/flashnotice-vs-flash-nownotice/</a>

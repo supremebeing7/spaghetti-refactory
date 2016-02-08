@@ -1,0 +1,15 @@
+---
+layout: post
+title: Arbitrary SQL ordering
+date: '2016-01-25T21:22:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- ruby
+- memory
+- sql
+modified_time: '2016-01-25T21:22:06.558-08:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-5037361362039957614
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2016/01/arbitrary-sql-ordering.html
+---
+
+I ran across an issue the other day where I had 4 records from the database that were being displayed in order of creation date, but I wanted them displayed in an arbitrary order - not alphabetical by name or title, or chronological, or sorted by id.<br /><br />Before, I probably would have used Ruby to loop through the records and build an array by comparing ids. Now, though, I know better than to use Ruby for this type of thing, because it’s faster and better for memory to do it in SQL if possible (which I <a href="http://spaghettirefactory.blogspot.com/2015/11/object-overload-careful-of.html">learned the hard way</a>).<br /><br />Turns out, querying using SQL looks a lot like what I would have written in Ruby anyhow:<br /><pre><code><br /></code></pre><pre><code>SELECT * FROM foo ORDER BY<br />CASE<br />  WHEN id=67 THEN 1<br />  WHEN id=23 THEN 2<br />  WHEN id=1362 THEN 3<br />  WHEN id=24 THEN 4<br />END<br /></code></pre><br />Pretty cool! Thanks to <a href="https://gist.github.com/cpjolicoeur/3590737">cpjolicoeur on Github</a> for this one.

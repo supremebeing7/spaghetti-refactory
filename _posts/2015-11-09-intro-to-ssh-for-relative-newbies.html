@@ -1,0 +1,18 @@
+---
+layout: post
+title: Intro to SSH for relative newbies
+date: '2015-11-09T20:46:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- ssh
+- deploy
+- ruby
+- devops
+- n00b
+- capistrano
+modified_time: '2015-11-09T20:46:00.697-08:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-8777457097008607477
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/11/intro-to-ssh-for-relative-newbies.html
+---
+
+I have an app running on an Amazon EC2 instance, and it requires an SSH key to access it. Previously, I had to access it by navigating to the folder containing my private key pem file, then running <code>ssh -p 2222 -i private_key.pem -A ubuntu@www.example.com</code>.<br /><br />Let’s break this down a bit.<br /><ul><li><code>-p 2222</code> - the port that my server runs on</li><li><code>-i private_key.pem</code> - use an Identity File (SSH key) and specify the name</li><li><code>-A</code> - use ForwardAgent to allow my public keys to pass through to the AWS server (important if I want to be able to access Github or some other service while SSH-ed into the server)</li><li><code>ubuntu@www.example.com</code> - username (<code>ubuntu</code>) and server HostName (<code>www.example.com</code>)</li></ul>This is all fine and dandy, but it’s a pain to remember. So, my next step to simplify this was setting up a terminal alias in <code>~/.bash_aliases</code><br /><pre><code><br /></code></pre><pre><code>alias my-server-ssh="cd ~ &amp;&amp; ssh -p 2222 -i private_key.pem -A ubuntu@www.example.com"<br /></code></pre><br />This lets me simply run <code>my-server-ssh</code> from whatever directory I’m in on the terminal and automatically login to my server. However, once I have a couple more servers to juggle, it starts to get troublesome keeping track of these things. It’s also problematic if I want to use a tool like <a href="http://capistranorb.com/">Capistrano</a> for deployment.<br /><br />Here’s where setting up the <code>~/.ssh/config</code> file comes in handy. I opened this file in my text editor, and entered this info:<br /><pre><code><br /></code></pre><pre><code>Host my-server<br />    HostName www.example.com<br />    Port 2222<br />    User ubuntu<br />    IdentityFile "~/.ssh/private_key.pem"<br />    ForwardAgent yes<br /></code></pre><br />Once I save, I can now use my computer’s built in SSH manager to access my server by running the command <code>ssh my-server</code>.  Then, in a tool like Capistrano, I can plug this line into my config file:<br /><pre><code><br /></code></pre><pre><code>server 'my-server', roles: %w{app web}<br /></code></pre><br />It will read my <code>~/.ssh/config</code> file, find the configuration for host <code>my-server</code> and SSH in.<br /><br />– <br /><br /> Big ups to <a href="http://nerderati.com/2011/03/17/simplify-your-life-with-an-ssh-config-file/">Nerderati</a> for the helpful explanation on SSH config.

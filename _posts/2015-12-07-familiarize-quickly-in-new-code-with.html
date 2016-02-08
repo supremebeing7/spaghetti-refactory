@@ -1,0 +1,15 @@
+---
+layout: post
+title: Familiarize quickly in new code with this trick
+date: '2015-12-07T23:02:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+- debugging
+modified_time: '2015-12-26T23:04:08.924-08:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-5457183847617111456
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/12/familiarize-quickly-in-new-code-with.html
+---
+
+Here’s a quick and nifty little trick that comes in extremely handy in a lot of situations, but particularly when dealing with an unfamiliar codebase, such as at a new job or working with a previously unused external gem.<br /><br />In the rails console, enter:<br /><pre class="prettyprint"><code class=" hljs mel"><span class="hljs-keyword"><br /></span></code></pre><pre class="prettyprint"><code class=" hljs mel"><span class="hljs-keyword">ls</span> Model </code></pre><br />and it will show all the class and instance methods, as well as associations and a bunch of other cool stuff for that model.<br /><br />I’ve begun using this in place of these two:<br /><pre class="prettyprint"><code class=" hljs avrasm"><br /></code></pre><pre class="prettyprint"><code class=" hljs avrasm">Model<span class="hljs-preprocessor">.methods</span><br />Model<span class="hljs-preprocessor">.new</span><span class="hljs-preprocessor">.methods</span></code></pre><br />Not only because it’s simpler with less typing but it else ends up being much easier to read.

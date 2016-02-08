@@ -1,0 +1,13 @@
+---
+layout: post
+title: Bash yourself multiple times
+date: '2015-03-20T16:59:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- bash
+modified_time: '2015-08-21T10:15:15.623-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-337431101820933240
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/03/bash-yourself-multiple-times.html
+---
+
+Here's a quick Bash trick. Run command line commands multiple times:  <br /><pre><code><br /></code></pre><pre><code>  for i in `seq #{run_how_many_times}`; do #{command_to_run}; done</code></pre><br />Example:  <br /><pre><code><br /></code></pre><pre><code>  for i in `seq 10`; do rspec spec; done</code></pre><br />This is super helpful in debugging tests with intermittent failures.

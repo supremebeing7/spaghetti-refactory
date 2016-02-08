@@ -1,0 +1,15 @@
+---
+layout: post
+title: One simple way to get data from a Rails view into a JavaScript file
+date: '2015-01-11T22:10:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+- javascript
+modified_time: '2015-08-21T10:14:59.696-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-7666193400199639665
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/01/one-simple-way-to-get-data-from-rails.html
+---
+
+I had a tricky problem where there was some data from the server that was being sent to the view in query params, and I needed it in my JS file to selectively show/hide elements. Here's what I ended up doing.<br /><br />In my view (HAML syntax, for the uninitiated), I am essentially creating an empty div, giving it a unique ID, and filling in data attributes with the data I need. (NOTE: <code>start_date</code>, <code>start_time</code>, and <code>time_zone</code> are variables defined elsewhere):  <br /><pre></pre><pre><code>  #video-or-in-person-fields{ 'data-start-date' =&gt; start_date, 'data-start-time' =&gt; start_time, 'data-time-zone' =&gt; time_zone }<br /></code></pre><br />Then, in my JS file:  <br /><pre><code><br />  start_date = $("#video-or-in-person-fields").attr('data-start-date')<br />  start_time = $("#video-or-in-person-fields").attr('data-start-time')<br />  time_zone = $("#video-or-in-person-fields").attr('data-time-zone')<br /></code></pre><br />Whammy.

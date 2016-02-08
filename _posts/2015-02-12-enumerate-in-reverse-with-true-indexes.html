@@ -1,0 +1,13 @@
+---
+layout: post
+title: Enumerate in reverse with true indexes in Ruby
+date: '2015-02-12T14:29:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- ruby
+modified_time: '2015-08-21T22:57:34.659-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-4555009546330699265
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/02/enumerate-in-reverse-with-true-indexes.html
+---
+
+I had a problem one day where I had a list that I wanted to enumerate over, but I wanted to do it in reverse order. Easy peasy by just calling <code>#reverse</code> on the collection, right? Sure, except that I wanted the index as well. Oh, and I wanted the index to start with the last one instead of zero.<br /><br />Now it's getting good.<br /><br />I found this beauty on StackOverflow (<i>thanks <a href="http://stackoverflow.com/a/20248507/3477163">Bue Grønlund</a>, whoever you are</i>). To do a reverse each_with_index with the true index:  <br /><pre><code><br />['Seriously', 'Chunky', 'Bacon'].to_enum.with_index.reverse_each do |word, index| <br />  puts "index #{index}: #{word}" <br />end<br /></code></pre><br />Output: <br /><pre><code><br />index 2: Bacon <br />index 1: Chunky <br />index 0: Seriously<br /></code></pre><br />Pretty nifty!

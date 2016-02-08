@@ -1,0 +1,14 @@
+---
+layout: post
+title: A Primer on Time Zone parsing in Rails with ActiveSupport
+date: '2015-01-12T22:22:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+modified_time: '2015-08-21T10:08:38.720-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-9049884431609743101
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/01/a-primer-on-time-zone-parsing-in-rails.html
+---
+
+To get time zone abbreviation (ie ‘PST’ for Pacific Time), you can call <code>#zone</code> method on any Time object. However, <code>ActiveSupport::TimeZone</code> parsing does not work with that zone format, so if you need to parse a time object by zone, better to get the full zone name. Here’s a method that does that.&nbsp; <br /><br />This is a helper method for views, call by itself, not on an object:  <br /><pre><code><br />  def time_zone_name(any_time_object)<br />    utc_offset = time.to_s[-5..-1]<br />    # UTC offset example: Eastern Time == '-0500'<br />    # We need it in integer format -5<br />    ActiveSupport::TimeZone[utc_offset.gsub!('0','').to_i].name<br />  end<br /><br /># =&gt; ‘Bogota’ (which is the same time zone as Eastern Standard Time (US and Canada)<br /></code></pre><br />Now you can use this time zone string to parse Time objects with <code>ActiveSupport::TimeZone</code> <br /><pre><code><br />ActiveSupport::TimeZone[“Bogota”].parse(Time.now.to_s)<br /># =&gt; outputs the current time with -0500 UTC offset, aka Eastern Time<br /></code></pre><br />Caveat: it will output that time with the abbreviation for Bogota time zone, COT.  Example: Mon, 12 Jan 2015 15:50:57 COT -05:00 The time and UTC offset will be the same as for EST, and should behave similarly when parsing, but it is still something to be aware of. 

@@ -1,0 +1,15 @@
+---
+layout: post
+title: Joining two join tables in Rails
+date: '2015-01-08T21:43:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+modified_time: '2015-08-21T10:08:38.708-07:00'
+thumbnail: http://2.bp.blogspot.com/-WZPEN6dhx-0/VQ5JhoktU3I/AAAAAAAAZqE/TG1qCmHdFm4/s72-c/j5off.jpg
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-8376831483388048786
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/01/joining-two-join-tables-in-rails.html
+---
+
+Joining data from two join tables in Rails is gross, but sometimes necessary.<br /><br />Let’s say I have a join table <code>items_categories</code> and a join table <code>items_groups</code>. I want to get all items that are in the same category and the same group, by category and by group ids. Here's how I did it:  <br /><pre><code><br />  Item.joins(:items_groups).joins(:items_categories). <br />       where('items_categories.category_id = ?', category_id).<br />       where('items_groups.group_id = ?', group_id)<br /></code></pre><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-WZPEN6dhx-0/VQ5JhoktU3I/AAAAAAAAZqE/TG1qCmHdFm4/s1600/j5off.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/-WZPEN6dhx-0/VQ5JhoktU3I/AAAAAAAAZqE/TG1qCmHdFm4/s1600/j5off.jpg" height="206" width="320" /></a></div><br />UPDATE: Since posting this, we have changed how we handle this and made a model to holds all three IDs so there is a three-way relation. This seems to be a better approach than the above, but it was fun making all those joins anyway.

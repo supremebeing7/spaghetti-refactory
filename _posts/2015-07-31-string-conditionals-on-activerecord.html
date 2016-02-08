@@ -1,0 +1,16 @@
+---
+layout: post
+title: String conditionals on ActiveRecord callbacks
+date: '2015-07-31T23:51:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+- activerecord
+- callbacks
+modified_time: '2015-09-22T13:40:34.414-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-844270865886713631
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/07/string-conditionals-on-activerecord.html
+---
+
+I’ve got a model for push notifications that uses <a href="http://parse.com/" rel="nofollow" target="_blank">Parse.com</a>, and it sends the data to Parse on a callback:<br /><pre><code><br /></code></pre><pre><code>before_create :send_to_parse<br /></code></pre><br />The problem is, I have a whole bunch of specs that create push notifications, and I don’t want any sent to Parse during testing. Now, I don’t have the Parse credentials accessible within the test environment, but that throws an error when it tries to send to Parse. So, what I really want is to just send to Parse when we’re not testing.<br /><br />Turns out this is dead simple, albeit a little strange at first:<br /><pre><code><br /></code></pre><pre><code>before_create :send_to_parse, unless: "Rails.env.test?"<br /></code></pre><br />I’ve used conditionals with symbolized method names before, but the string bit threw me off. However, it’s simple valid Ruby code, you can put it in a string and it will be evaluated as such.<br /><br />This is <a href="http://guides.rubyonrails.org/active_record_callbacks.html#using-if-and-unless-with-a-string" rel="nofollow" target="_blank">straight from the docs</a>, and I thought it was super cool.

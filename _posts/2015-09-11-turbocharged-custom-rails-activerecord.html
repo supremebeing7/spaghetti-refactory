@@ -1,0 +1,18 @@
+---
+layout: post
+title: Turbocharged custom Rails / ActiveRecord validations
+date: '2015-09-11T14:23:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+- activerecord
+- callbacks
+- validations
+- activemodel
+modified_time: '2015-09-22T14:23:47.771-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-5649145828773121027
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/09/turbocharged-custom-rails-activerecord.html
+---
+
+My code just got a lot less janky when dealing with start and end times. Before, when I wanted to validate that a user-submitted end time came after a start time, I was doing something like this:<br /><pre><code><br /></code></pre><pre><code>validate :start_time_is_before_end_time<br />def start_time_is_before_end_time<br />    unless start_time.to_i &lt; end_time.to_i<br />        errors.add(:end_time, 'must come after start time')<br />    end<br />end<br /></code></pre><br />Converting the values to epoch time and comparing isn’t terrible, but I just found a cool way to extract this out to a custom validator to make it simpler and more readable:<br /><pre><code><br /></code></pre><pre><code># app/models/model.rb<br />require "active_model/sequential_validator"<br />validates :start_time, :end_time, sequential: true<br /></code></pre><pre><code># lib/active_model/sequential_validator.rb<br />class SequentialValidator &lt; ActiveModel::Validator<br />    def validate record<br />        values = options[:attributes].map do |attribute|<br />           record.send(attribute)<br />        end.compact<br />        if values.sort != values<br />            record.errors.add options[:attributes].last, "cannot be before #{options[:attributes].first}"<br />        end<br />    end<br />end<br /></code></pre><pre><code><br /></code></pre>True, the actual validator code is not as easy to read I don’t think, but it takes some of the burden out of the model, and it also allows reusing the sequential validation in other models.<br /><br />(Thanks to <a href="https://github.com/calagator/calagator/commit/f4086be76b63debe48e54b5197497d033293c714" rel="nofollow" target="_blank">botandrose and the calagator project</a>&nbsp;for this cool piece of code.)

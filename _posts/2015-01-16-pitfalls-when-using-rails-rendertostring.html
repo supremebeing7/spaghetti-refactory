@@ -1,0 +1,14 @@
+---
+layout: post
+title: Pitfalls when using Rails `render_to_string`
+date: '2015-01-16T22:42:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+modified_time: '2015-08-21T10:08:38.670-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-414988834062583500
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/01/pitfalls-when-using-rails-rendertostring.html
+---
+
+I spent a couple hours debugging this one and thought I should write it down:<br /><code><br /></code><code>#render_to_string</code> needs the full file extension for templates and partials passed in, and it also needs locals defined even if the local is an exposed variable or an instance variable.<br /><br />For example, the approach detailed in the <a href="http://spaghettirefactory.blogspot.com/2015/03/publishing-object-and-associations.html">previous post</a>:  <br /><pre><code><br />    object_details = JSON.parse render_to_string(partial: 'path/to/object/detail.json.jbuilder')<br /></code></pre><br />It needs locals defined in order to work properly:  <br /><pre><code><br />    object_details = JSON.parse render_to_string(partial: 'path/to/object/detail.json.jbuilder', locals: { object: object })  <br /></code></pre><br />Also need to ensure if there are any nested partials within the partial being rendered to string, those partials need the file extension as well. 

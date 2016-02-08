@@ -1,0 +1,13 @@
+---
+layout: post
+title: Speed up your ActiveRecord queries with Model.select
+date: '2015-01-27T13:47:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- ruby
+modified_time: '2015-08-21T10:06:46.796-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-5413339325325059366
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/01/speed-up-your-activerecord-queries-with.html
+---
+
+Say you want to display a list of all your users' names and link to their show pages. Instead of running <code>User.all</code>, instantiating every field of every user, there's a better way. Since you only need the name and id or slug (for the link), better to run:  <br /><br /><pre><code>@users = User.select(:name, :email)</code></pre><br />That will instantiate user objects with just those attributes, saving memory and database query time.&nbsp; <br /><br />Also, brand new for Rails 4.2, you can presumably print out the fields selected by called <code>@users.first.accessed_fields</code>. This is primarily helpful in development mode so you know which fields you have access to. However, I couldn't get this to work locally, might need to be using master branch of Rails. Read more here: https://github.com/rails/rails/commit/be9b680

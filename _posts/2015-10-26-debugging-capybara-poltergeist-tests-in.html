@@ -1,0 +1,16 @@
+---
+layout: post
+title: Debugging Capybara Poltergeist tests in Rails
+date: '2015-10-26T19:57:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- rspec
+- rails
+- poltergeist
+- capybara
+modified_time: '2015-11-05T14:36:39.736-08:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-6662806581798641142
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/10/debugging-capybara-poltergeist-tests-in.html
+---
+
+I made the switch from selenium webdriver to <a href="http://spaghettirefactory.blogspot.com/2015/06/take-control-of-your-rspec-test-suite.html">poltergeist</a> on my capybara tests when the suite started taking 20 minutes to run. (For my process of getting the test suite under control, check out <a href="http://spaghettirefactory.blogspot.com/2015/06/take-control-of-your-rspec-test-suite.html">my previous post</a>.) While poltergeist has definitely been a boon, it can sometimes be hard to debug because I can’t physically see the page. That’s where this tip comes in handy, stolen from the <a href="https://quickleft.com/blog/five-capybara-hacks-to-make-your-testing-experience-less-painful/">Quickleft blog</a>:<br /><br /><blockquote class="tr_bq"><b>Find the Port Address and Pause the Test&nbsp;</b></blockquote><blockquote class="tr_bq"> Sometimes I just want to see what's going on in the browser. Although save_and_open_page gives you some idea of what's going on, you can't really click around, because the page it gives you is static and lacking assets. To dig into what's going on, I like to use a trick I learned from my mentor, Mike Pack.&nbsp;</blockquote><blockquote class="tr_bq"> Just above the broken line in your test, add these two lines of code. Note that you have to have pry installed in your current gemset or specified in the Gemfile for this to work.&nbsp;</blockquote><blockquote class="tr_bq"> <code>puts current_url</code><br /><code>require 'pry'; binding.pry</code>&nbsp;</blockquote><blockquote class="tr_bq"> Run the specs, and when they pause, copy the url and port number from the test output.&nbsp;</blockquote><blockquote class="tr_bq">Open your browser and paste the address into the window. Voila! You're now browsing your site in test mode!</blockquote><br />Thanks again to the <a href="https://quickleft.com/blog">Quickleft folks</a> for this cool tip - it’s one of five tricks for less painful testing.

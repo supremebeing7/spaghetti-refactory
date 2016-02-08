@@ -1,0 +1,15 @@
+---
+layout: post
+title: Classy Ruby enumerating
+date: '2016-01-04T23:22:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+- metaprogramming
+modified_time: '2016-01-04T23:22:07.752-08:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-2473543919172498110
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2016/01/classy-ruby-enumerating.html
+---
+
+Given two users:<br /><pre class="prettyprint"><code class=" hljs sql"><br /></code></pre><pre class="prettyprint"><code class=" hljs sql">User.<span class="hljs-operator"><span class="hljs-keyword">create</span>(first_name: <span class="hljs-string">"Joe"</span>, last_name: <span class="hljs-string">"Louis"</span>)<br />#=&gt; <span class="hljs-keyword">User</span> id: <span class="hljs-number">1</span>, first_name: <span class="hljs-string">"Joe"</span>, last_name: <span class="hljs-string">"Louis"</span><br /><br /><span class="hljs-keyword">User</span>.<span class="hljs-keyword">create</span>(first_name: <span class="hljs-string">"Muhammed"</span>, last_name: <span class="hljs-string">"Ali"</span>)<br />#=&gt; <span class="hljs-keyword">User</span> id: <span class="hljs-number">2</span>, first_name: <span class="hljs-string">"Muhammed"</span>, last_name: <span class="hljs-string">"Ali"</span></span></code></pre><br />Say you want to get an array of arrays, with each individual array containing two elements: the first and last name, and the id. You could do something like this, which is perfectly valid but also gross to read:<br /><pre class="prettyprint"><code class=" hljs sql"><br /></code></pre><pre class="prettyprint"><code class=" hljs sql">User.pluck(:id, :first_name, :last_name).map <span class="hljs-operator"><span class="hljs-keyword">do</span> |<span class="hljs-keyword">user</span>|<br />  id = <span class="hljs-keyword">user</span>[<span class="hljs-number">0</span>]<br />  <span class="hljs-keyword">first</span> = <span class="hljs-keyword">user</span>[<span class="hljs-number">1</span>]<br />  <span class="hljs-keyword">last</span> = <span class="hljs-keyword">user</span>[<span class="hljs-number">2</span>]<br />  [<span class="hljs-string">"#{first} #{last}"</span>, id]<br /><span class="hljs-keyword">end</span></span></code></pre><br />However, it’s much more readable to use tuple syntax:<br /><pre class="prettyprint"><code class=" hljs ruby"><span class="hljs-constant"><br /></span></code></pre><pre class="prettyprint"><code class=" hljs ruby"><span class="hljs-constant">User</span>.pluck(<span class="hljs-symbol">:id</span>, <span class="hljs-symbol">:first_name</span>, <span class="hljs-symbol">:last_name</span>).map <span class="hljs-keyword">do</span> |(id, first, last)|<br />  [<span class="hljs-string">"<span class="hljs-subst">#{first}</span> <span class="hljs-subst">#{last}</span>"</span>, id]<br /><span class="hljs-keyword">end</span><br /><span class="hljs-comment">#=&gt; [</span><br />      [<span class="hljs-string">"Joe Louis"</span>, <span class="hljs-number">1</span>],<br />      [<span class="hljs-string">"Muhammed Ali"</span>, <span class="hljs-number">2</span>]<br />    ]</code></pre>

@@ -1,0 +1,14 @@
+---
+layout: post
+title: More readable value change testing in rspec
+date: '2015-09-01T13:28:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- rspec
+- ruby
+modified_time: '2015-09-22T13:34:57.471-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-1122252758471412195
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/09/more-readable-value-change-testing-in.html
+---
+
+Some simple but effective <code>rspec</code> syntax that I just learned:<br /><pre><code><br /></code></pre><pre><code>expect{Object.method}.to change{Object.count}.from(0).to(1)<br /></code></pre><br />I think this is fairly straightforward, but essentially it just lets you test for value changes. This is basically just a clearer way of writing expectations and would replace something like this:<br /><pre><code><br /></code></pre><pre><code>expect(Object.count).to eq(0)<br />Object.method<br />expect(Object.count).to eq(1)<br /></code></pre><br />Check the <a href="https://www.relishapp.com/rspec/rspec-expectations/v/2-2/docs/matchers/expect-change" rel="nofollow" target="_blank">rspec docs for more details</a>.

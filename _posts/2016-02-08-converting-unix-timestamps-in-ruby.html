@@ -1,0 +1,15 @@
+---
+layout: post
+title: Converting unix timestamps in Ruby
+date: '2016-02-08T13:01:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- ruby
+- datetime
+- api
+modified_time: '2016-02-08T13:01:02.996-08:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-5053806663704562462
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2016/02/converting-unix-timestamps-in-ruby.html
+---
+
+Unix timestamps are common to see in other languages, and also common to see in API responses. Converting a unix timestamp to DateTime in Ruby is dead simple:<br /><pre><code><br /></code></pre><pre><code>unix_timestamp = Time.<span class="hljs-built_in">now</span>.to_i<br /><span class="hljs-preprocessor"># =&gt; 1453667949</span><br />DateTime.strptime(unix_timestamp.to_s, <span class="hljs-string">"%s"</span>).to_s<br /><span class="hljs-preprocessor"># =&gt; <span class="hljs-string">"2016-01-24T20:39:09+00:00"</span> </span><br /></code></pre><br />Let’s say your unix timestamp includes milliseconds:<br /><pre><code><br /></code></pre><pre><code>unix_timestamp = (Time.now.to_f * <span class="hljs-number">1000</span>).to_i<br /><span class="hljs-preprocessor"># =&gt; <span class="hljs-number">1453667949151</span></span><br />DateTime.strptime(unix_timestamp.to_s, <span class="hljs-string">"%Q"</span>).to_s<br /><span class="hljs-preprocessor"># =&gt; <span class="hljs-string">"2016-01-24T20:39:09+00:00"</span> </span><br /></code></pre><code><br /></code><code>DateTime.strptime</code> will allow you convert just about any formatted time string, <a href="http://apidock.com/ruby/DateTime/strftime">see the docs for examples</a>.<br /><br />Notice how both DateTime strings are the same? DateTime converted to string drops any millisecond data, but keep it as a DateTime object and you can run <code>strftime</code> and display it in any format you like:<br /><pre><code><span class="hljs-built_in"><br /></span></code></pre><pre><code><span class="hljs-built_in">DateTime</span>.strptime(unix_timestamp.to_s, <span class="hljs-string">"%Q"</span>).strftime(<span class="hljs-string">'%D %T:%L'</span>)<br /># =&gt; <span class="hljs-string">"01/24/16 20:39:09:151"</span><br /></code></pre>

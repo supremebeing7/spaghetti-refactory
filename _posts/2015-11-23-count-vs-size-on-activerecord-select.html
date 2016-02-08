@@ -1,0 +1,16 @@
+---
+layout: post
+title: count vs size on ActiveRecord select queries
+date: '2015-11-23T21:09:00.001-08:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+- debugging
+- activerecord
+modified_time: '2015-12-26T21:21:23.565-08:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-241288833602905613
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/11/count-vs-size-on-activerecord-select.html
+---
+
+I stumbled on this bit of weirdness when using the SQL query <code>User.select(:id, :name, :email).count</code>. It threw a <code>PG::UndefinedFunction</code> error. Using <code>User.select(:id, :name, :email).size</code> worked instead.<br /><br />Out of curiosity, I did some digging. <a href="http://api.rubyonrails.org/classes/ActiveRecord/Calculations.html#method-i-count">According the the ActiveRecord docs</a>, <br /><blockquote>not all valid select expressions are valid count expressions. The <br />  specifics differ between databases. In invalid cases, an error from <br />  the database is thrown.</blockquote>I also stumbled on an issue on rails Github issues page about this, and a <a href="https://github.com/rails/rails/issues/19146#issuecomment-76599708">very helpful comment from rafaelfranca</a> explained that I can also use <code>count(:all)</code>. 

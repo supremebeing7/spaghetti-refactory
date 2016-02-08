@@ -1,0 +1,15 @@
+---
+layout: post
+title: Find multiple records with ActiveRecord's Model.find
+date: '2015-03-18T16:47:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- ruby
+- active
+- sql
+modified_time: '2015-08-21T22:56:06.719-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-4069345590181168655
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/03/find-multiple-records-with.html
+---
+
+This is something cool that it took me over a year of coding in Ruby to find out. If I have a comma separated list or an array of IDs, I can find all of the records in one call:  <br /><pre><code><br /></code></pre><pre><code>  Model.find(ids)</code></pre><br />Caveat: This will give the objects back in an array. However, if you want to run ActiveRecord methods on this, better to use this:  <br /><pre><code><br /></code></pre><pre><code>  Class.where(id: ids)</code></pre><br />Then, you can chain methods like so:  <br /><pre><code><br /></code></pre><pre><code>  Class.where(id: ids).update_all(updated_at: Time.now)</code></pre><br />Be careful! <code>update_all</code> does NOT run validations. But it is incredibly useful for updating several records without instantiating all of the objects. This is a straight sequel query, hence no callbacks. 

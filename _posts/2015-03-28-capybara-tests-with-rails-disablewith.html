@@ -1,0 +1,15 @@
+---
+layout: post
+title: Capybara tests with Rails `disable_with` on forms
+date: '2015-03-28T11:29:00.001-07:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+- capybara
+modified_time: '2015-08-21T10:12:45.924-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-2032564570596245122
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/03/capybara-tests-with-rails-disablewith.html
+---
+
+Here's something that threw me for a loop for a little bit.   <br /><br />When using the <code>disable_with</code> option on form submit buttons, under the hood this is running some minimal JavaScript code, so Capybara tests have to be run as <code>js: true</code>, otherwise they will fail.

@@ -1,0 +1,15 @@
+---
+layout: post
+title: Quick and easy HTTP headers with HTTParty
+date: '2015-07-16T23:10:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- ruby
+- http
+- api
+modified_time: '2015-08-28T16:09:25.345-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-5135389378277861591
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/07/quick-and-easy-http-headers-with.html
+---
+
+<strong>UPDATE: <a href="https://github.com/jnunemaker/httparty/pull/430">I changed the gem</a>. It now follows redirects and maintains the HEAD request across all redirects.</strong><br /><br />I have a method that checks URLs submitted by the user to ensure they are valid. I don’t want to scrape the page to make sure any specific text is on there because the URLs can go almost anywhere, so I basically only care if the URL returns an HTTP <code>200</code> status.<br /><br />I’m using the excellent <a href="https://github.com/jnunemaker/httparty">HTTParty Ruby gem</a> to make my external requests, and it offers a handy <code>.head</code> method that only returns the website headers for the request:<br /><pre><code><br /></code></pre><pre><code>HTTPart.head(external_url)<br /></code></pre><br /><s>However, I found out that if the requested site redirects, then subsequent requests get changed to <code>GET</code>, which isn’t ideal since the <code>GET</code> request will download the entire page’s content rather than just the headers, and is understandably slower.<br /><br />Thankfully, there are a couple options that can be passed to the <code>.head</code> method which takes care of this:<br /></s><br /><pre><s><code><br /></code></s></pre><s></s><br /><pre><s><code>HTTParty.head(external_url_with_redirects,<br />              maintain_method_across_redirects: true,<br />              follow_redirects: true)<br /></code></s></pre><br />Now, I get just the headers, and since all I care about is whether it was a successful request, I’m able to call <code>.success?</code> in my method and use the return value.<br /><br />There are a few external HTTP gems out there - Net:HTTP (of which HTTParty is a wrapper), RestClient, etc - but HTTParty is my favorite so far, and easiest to work with. Check it out if you haven’t already.

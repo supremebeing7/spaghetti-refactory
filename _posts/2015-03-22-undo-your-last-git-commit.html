@@ -1,0 +1,13 @@
+---
+layout: post
+title: Undo your last git commit
+date: '2015-03-22T11:18:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- git
+modified_time: '2015-08-21T10:15:23.540-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-4507591959297973513
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/03/undo-your-last-git-commit.html
+---
+
+If you check my Google search history, one of the most frequent searches you'd probably see is "undo git commit." This is primarily from pulling the latest <code>master</code> or <code>staging</code> branch, making changes and committing accidentally before creating a new branch. So, I create the new branch with my new commit on it, but then I want to switch back to <code>master</code> or <code>staging</code> and nuke that last commit. Here's the very simple one-liner I use, taken directly from <a href="http://stackoverflow.com/questions/927358/how-to-undo-the-last-commit/6866485#6866485">this extremely helpful StackOverflow answer</a>:  <br /><pre><code><br />  git reset --hard HEAD~1<br /></code></pre><br />Make <b><u>SURE</u></b> you have created that new branch so that you have your commit somewhere else, because this git command will completely erase your commit from the branch in which you are currently working.

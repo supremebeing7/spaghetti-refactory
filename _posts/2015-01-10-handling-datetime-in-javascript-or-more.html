@@ -1,0 +1,13 @@
+---
+layout: post
+title: Handling datetime in JavaScript (or more accurately, CoffeeScript)
+date: '2015-01-10T22:01:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- javascript
+modified_time: '2015-08-21T10:14:59.691-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-3962929739241625014
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/01/handling-datetime-in-javascript-or-more.html
+---
+
+Working with Date, Time, and DateTime seems to be pretty awful in any language, but compared to Ruby and ActiveSupport, doing it in JS or Coffee is <i>awful</i>. You can get libraries that make it a little easier to work with (I believe Moment.js is one such that can be very helpful), but for simple formatting things, it's easier and more lightweight to just write your own functions.<br /><br />&nbsp;This gives today’s date in YYYY-MM-DD format:  <br /><pre><code><br />  date_today = -&gt;<br />    today = new Date()<br />    dd = today.getDate()<br />    mm = today.getMonth() + 1<br />    yyyy = today.getFullYear()<br />    if dd &lt; 10<br />      dd = '0' + dd<br />    if mm &lt; 10<br />      mm = '0' + mm<br />    today = yyyy+'-'+mm+'-'+dd<br />    return today<br /></code></pre><br />This gives the current time in HH:MM:SS -0800 format, where -0800 is the timezone offset from GMT, and the HH are displayed in 24 hour time:  <br /><pre><code><br />  time_now = -&gt;<br />    right_now = new Date()<br />    hh = right_now.getHours()<br />    mm = right_now.getMinutes()<br />    ss = right_now.getSeconds()<br />    time_zone = right_now.toString().split(':')[2].substr(6, 5)<br />    if time_zone == ""<br />      time_zone = "UTC"<br />    right_now = hh+':'+mm+':'+ss+' '+time_zone<br />    return right_now<br /></code></pre>

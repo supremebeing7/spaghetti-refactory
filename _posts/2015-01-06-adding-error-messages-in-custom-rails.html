@@ -1,0 +1,14 @@
+---
+layout: post
+title: Adding error messages in custom Rails validate methods
+date: '2015-01-06T21:39:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+modified_time: '2015-08-21T10:08:38.684-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-5848926012009002206
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/01/adding-error-messages-in-custom-rails.html
+---
+
+If you've ever needed custom validators in Rails, this is what you need in your methods when something doesn't pass a validation:  <br /><pre><code><br />  errors.add(:base, 'A star count score must be within the range of 0 to 5.')<br /></code></pre><br />This will add that error message to <code>object.errors</code>If you tweak it slightly to this, it becomes more extensible:  <br /><pre><code><br />  errors.add(:star_count, 'score must be within the range of 0 to 5.')<br /></code></pre><br />You can call <code>object.errors.full_messages.each do |message|</code> and it will basically output this:   <code>“#{:star_count.to_s.capitalize} score must be within the range of 0 to 5.”</code>

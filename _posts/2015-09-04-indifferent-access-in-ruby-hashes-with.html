@@ -1,0 +1,15 @@
+---
+layout: post
+title: Indifferent Access in Ruby Hashes (with ActiveSupport)
+date: '2015-09-04T13:22:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+- data structures
+modified_time: '2015-09-22T13:34:44.535-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-9078546791796805422
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/09/indifferent-access-in-ruby-hashes-with.html
+---
+
+I kept seeing this “Hash with indifferent access” in open source projects, but never knew quite what it was. Turns out it’s something I use in Rails all of the time without knowing, particularly in dealing with params. It allows me to access values in a hash using either string or symbolized keys.<br /><br />For example:<br /><br /><pre><code>params['name'] == params[:name]<br /># =&gt; true<br /></code></pre><pre><code><br /></code></pre>However, a normal Hash in Ruby does not allow this:<br /><br /><pre><code>hash = { 'name' =&gt; 'Fred' }<br />hash['name']<br /># =&gt; 'Fred'<br />hash[:name]<br /># =&gt; nil<br />hash['name'] == hash[:name]<br /># =&gt; false<br /></code></pre><pre><code><br /></code></pre>We can fix this by making this into a hash with indifferent access:<br /><br /><pre><code>new_hash = hash.with_indifferent_access<br />new_hash['name'] == new_hash[:name]<br /># =&gt; true<br /></code></pre><pre><code><br /></code></pre>The hash can also be defined/initialized with indifferent access, either by calling that method on the initial hash assignment, or by creating it using ActiveSupport (which is what the <code>with_indifferent_access</code> method does under the hood anyway):<br /><br /><pre><code>hash = ActiveSupport::HashWithIndifferentAccess.new(name: 'Fred')<br />hash['name'] == hash[:name]<br /># =&gt; true<br /></code></pre><pre><code><br /></code></pre>Note: When working in straight Ruby, this will not work as it’s using ActiveSupport. One would likely need to run <code>gem install active_support</code> and require it properly.<br /><br />Source: <a href="http://apidock.com/rails/Hash/with_indifferent_access" rel="nofollow" target="_blank">apidock</a> and <a href="http://api.rubyonrails.org/classes/ActiveSupport/HashWithIndifferentAccess.html" rel="nofollow" target="_blank">RoR api</a>

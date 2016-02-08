@@ -1,0 +1,13 @@
+---
+layout: post
+title: Caveat to omitting `self` in Model method calls
+date: '2015-03-23T13:53:00.002-07:00'
+author: Mark J. Lehman
+tags:
+- ruby
+modified_time: '2015-08-21T10:06:46.711-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-1784267566318548176
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/03/caveat-to-omitting-self-in-model-method.html
+---
+
+I wanted to add a caveat to <a href="http://spaghettirefactory.blogspot.com/2015/03/using-self-in-model-methods.html">something I stated in a previous post</a> about leaving <code>self</code> out when calling methods from inside other methods in a model. This WILL give you problems if you are trying to assign values to a Model attribute. <br /><br />For example, doing this:  <br /><pre><code><br />  def change_object_name<br />    name = "Steve"<br />  end<br /></code></pre><br />All this is doing is setting a local variable called <code>name</code> equal to "Steve." If your Model has an attribute called <code>name</code> and you want to set it, you have to use <code>self.name</code>:  <br /><pre><code><br />  def change_object_name<br />    self.name = "Steve"<br />    # Oh, and don't forget to save!<br />    save<br />  end<br /></code></pre>

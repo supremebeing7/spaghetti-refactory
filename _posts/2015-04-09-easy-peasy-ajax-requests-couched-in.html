@@ -1,0 +1,16 @@
+---
+layout: post
+title: Easy peasy AJAX requests, couched in a Rails / Coffeescript environment
+date: '2015-04-09T12:30:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- ajax
+- rails
+- ruby
+- javascript
+modified_time: '2015-08-21T10:14:59.700-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-8927015253908882204
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/04/easy-peasy-ajax-requests-couched-in.html
+---
+
+What follows is a pretty standard POST using ajax, but I've had to do this sporadically enough that I felt the need to write it down for my own posterity. Since I'm most comfortable in Rails, the setting for this exercise will still be a Rails app.  <br /><br />Let's say you have a <code>UsersController</code> and <code>POST</code> route to <code>/users</code>. In order to <code>POST</code> to that route within a CoffeeScript (for example, <code>users.js.coffee</code>file: <br /><pre><code><br />  $.ajax(<br />    url: '/users'<br />    type: 'POST'<br />    data: { name: 'Bob Roberts', age: '52' }<br />  ).done (data) -&gt;<br />    // do something with data returned<br />    return<br /></code></pre><br />Inside your <code>UsersController#create</code> method, the <code>params</code> hash will have the data you submitted, so:<br /><pre><code><br />  params[:name]<br />  # =&gt; 'Bob Roberts'<br />  params[:age]<br />  # =&gt; '52'<br /></code></pre><br />Then, in your <code>create</code> method, you can do this:<br /><pre><code><br />def create<br />  @user = User.create(name: params[:name], age: params[:age])<br />  render json: @user<br />end<br /></code></pre><br />Fairly standard. The only thing slightly different is the <code>render</code> call, which will convert the object to a JSON hash and return it to the ajax POST as a <code>data</code> packet. That <code>data</code> object gets returned in the <code>.done</code> section of the ajax call for you to do with whatever you want.<br /><br />This approach has come in handy for me on a surprising number of occasions, despite how little JS code I write on a daily basis, so it's very good to know.

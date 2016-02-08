@@ -1,0 +1,17 @@
+---
+layout: post
+title: Migrating data in Rails using Rails migrations
+date: '2016-01-18T23:46:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- deploy
+- rails
+- ruby
+- n00b
+- activerecord
+modified_time: '2016-01-21T11:47:44.930-08:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-3183875161374943578
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2016/01/migrating-data-in-rails-using-rails.html
+---
+
+Put this one in the “should’ve been obvious” column…<br /><br />For an embarassingly long while, when I had a feature ready for deploy that required production data be modified for a whole bunch of records – for example, downcasing all <code>name</code> attributes – I would write a one-off rake task to update those records, then delete that task.<br /><br />Not only is this bad code since it doesn’t keep a record of what happened, it’s also tedious because it’s an extra step that must be taken by whoever deploys the code.<br /><br />Luckily there’s a better way - just put the updating login in a migration!<br /><br />Example:<br /><pre><code><span class="hljs-class"><span class="hljs-keyword"><br /></span></span></code></pre><pre><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DowncaseName</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Migration</span></span></span><br />  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">up</span></span><br />    <span class="hljs-constant">User</span>.where.<span class="hljs-keyword">not</span>(<span class="hljs-symbol">name:</span> <span class="hljs-keyword">nil</span>).find_each <span class="hljs-keyword">do</span> |user|<br />       user.update!(<span class="hljs-symbol">name:</span> user.name.downcase)<br />    <span class="hljs-keyword">end</span><br />  <span class="hljs-keyword">end</span><br /><span class="hljs-keyword">end</span><br /></code></pre><br />This example isn’t great because 1. there’s almost certainly a way to do this with pure SQL without instantiating every user record, and 2. it’s not reversible. But since I’m lazy and since it illustrates the point of the post, I’m leaving it.

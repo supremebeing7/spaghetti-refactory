@@ -1,0 +1,13 @@
+---
+layout: post
+title: 'Handling nil values with #to_s'
+date: '2015-02-25T15:52:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- ruby
+modified_time: '2015-08-21T10:06:46.791-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-5354864544450209018
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/02/handling-nil-values-with-tos.html
+---
+
+Occasionally, I have run into 500 server errors because there is an object attribute that is <code>nil</code> and I try to run a method on it. This tended to happen in my jbuilder files for returning API responses where the mobile app needed data in a certain format. Here's the simplest way to fix this:  <br /><pre><code><br /></code></pre><pre><code>nil.to_s&nbsp;</code></pre><pre><code>#=&gt; Outputs “”</code></pre><br />Even if I wasn't getting server errors, in jbuilder files, often returning a null value in the response can be problematic for whatever app is using that response, so if there’s a chance an object attribute is nil, instead of doing an if/else, simple run <code>#to_s</code> on the attribute. I’m guessing this might be a slight performance hit, but probably not much more than an if/else statement would be.

@@ -1,0 +1,16 @@
+---
+layout: post
+title: ActiveRecord querying on Postgres array column
+date: '2015-07-07T22:51:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+- activerecord
+- sql
+modified_time: '2015-08-21T22:53:12.397-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-5733136132200666924
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/07/activerecord-querying-on-postgres-array.html
+---
+
+On a Rails project I’m working on, we have a model that has a db column of array datatype. This is one of those Postgres special datatypes that isn’t present on many other SQL databases, and there’s even <a href="http://stackoverflow.com/a/17371788/3477163">some contention</a> about whether it should be an option at all.<br /><br />At any rate, this is deeply ingrained in our project currently, so I don’t want to go reinventing the wheel at this point and convert this particular column to a separate model and create another has_many/belongs_to relationship. All I want is a way to find all of the objects in this model that have an empty array in that column.<br /><br />Turns out there’s no built in ActiveRecord finder for this, but the raw SQL isn’t too terrible:<br /><pre><code><br /></code></pre><pre><code>Model.where("NULL = ALL(array_column_name)")<br /></code></pre><br /><i>Hat Tip: <a href="https://coderwall.com/p/sud9ja/rails-4-the-postgresql-array-data-type">https://coderwall.com/p/sud9ja/rails-4-the-postgresql-array-data-type</a></i>

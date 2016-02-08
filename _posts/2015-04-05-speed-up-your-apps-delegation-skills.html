@@ -1,0 +1,17 @@
+---
+layout: post
+title: Speed up your app's delegation skills using `:includes`
+date: '2015-04-05T10:49:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+- activerecord
+- sql
+modified_time: '2015-08-21T22:55:34.783-07:00'
+thumbnail: http://3.bp.blogspot.com/-Uj786e6bboE/VSLBvr2VT2I/AAAAAAAAZtE/jbMoFdH2Qf0/s72-c/jtei9.jpg
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-2398548789799201082
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/04/speed-up-your-apps-delegation-skills.html
+---
+
+My last post <a href="http://spaghettirefactory.blogspot.com/2015/04/a-true-leader-in-rails-knows-how-to.html">talked about delegating methods to a parent model using the <code>delegate</code></a> module. I want to talk about performance issues you could experience doing this, and a simple way to fix them and speed them up. <br /><br />When querying databases, there's something called "eager loading" that essentially is a way for the code to pull associated objects that may be needed at the same time as pulling the main object, thereby saving a separate DB call and hopefully saving some time. I won't pretend to know exactly how this works, I just know that it's supposed to be faster to do it this way. <br /><br />In my previous example, I had a Course with an associated CourseName, because I wanted to be able to create multiple Courses with the same name but different times and dates. I delegated the <code>:name</code> method to CourseName, so that instead of calling <code>course.course_name.name</code>, I can simply call <code>course.name</code> to achieve the same results. However, when I do that, it has to load the CourseName object on the fly, and that could result in some additional sluggishness. (Apparently, <a href="http://stackoverflow.com/questions/97197/what-is-the-n1-selects-issue">this is hotly debated whether these N+1 queries are faster or slower.</a>)  <br /><br />This is where eager loading is helpful. <br /><br />When you are finding a course with Course.find(params[:course_id]), throw in one additional thing to make this eager load the associated course name: <br /><pre><code><br />  Course.includes(:course_name).find(params[:course_id])<br /></code></pre><br />This helps remove the N+1 query and will hopefully help my performance. Now let's say I have a School object which <code>has_many :courses</code>. When I call <code>school.courses</code>, if I'm going to be displaying the course name as well, I'm into N+1 query land again. The easiest way to fix this is by adding it directly into the association in the School model: <br /><pre><code><br />class School &lt; ActiveRecord::Base<br />  has_many :courses, -&gt; { includes(:course_name) }<br />end<br /></code></pre><br />Whambo.<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/-Uj786e6bboE/VSLBvr2VT2I/AAAAAAAAZtE/jbMoFdH2Qf0/s1600/jtei9.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/-Uj786e6bboE/VSLBvr2VT2I/AAAAAAAAZtE/jbMoFdH2Qf0/s320/jtei9.jpg" /></a></div><div class="separator" style="clear: both; text-align: center;"><br /></div><i>Hat Tip:&nbsp;<a href="http://blog.arkency.com/2013/12/rails4-preloading/">http://blog.arkency.com/2013/12/rails4-preloading/</a>&nbsp;for the help in understanding preloading</i>

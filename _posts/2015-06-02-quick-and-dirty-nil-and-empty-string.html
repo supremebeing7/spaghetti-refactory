@@ -1,0 +1,13 @@
+---
+layout: post
+title: Quick and dirty nil and empty string handling in Ruby
+date: '2015-06-02T14:52:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- ruby
+modified_time: '2015-08-21T10:06:46.844-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-7930429972929036194
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/06/quick-and-dirty-nil-and-empty-string.html
+---
+
+I've run across issues with empty strings and nil values quite a bit lately - seems like mostly in relation to an API interfacing with iOS. Here are two quick tips:  <br /><br />To ensure that no <code>nil</code> values are given, I can call <code>.to_s</code> on any string values or values that should be strings. If one of them is <code>nil</code>, it will convert it to an empty string. If it's already a string, it will just leave it alone.  <br /><br />How about going the other way? <code>.presence</code> is the key. Call <code>.presence</code> on an empty string and it will give back <code>nil</code>. If the string isn't empty it will return the original string.  <br /><br />TL;DR:  <br /><br /><pre><code><br />"".presence <br /># =&gt; nil <br /><br />"hey".presence <br /># =&gt; "hey" <br /><br />nil.to_s <br /># =&gt; ""<br /><br />"hey".to_s <br /># =&gt; "hey"  <br /></code></pre><br /><br /><br />

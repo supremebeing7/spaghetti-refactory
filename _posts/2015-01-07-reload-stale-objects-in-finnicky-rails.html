@@ -1,0 +1,15 @@
+---
+layout: post
+title: Reload stale objects in finnicky Rails rspec tests
+date: '2015-01-07T21:28:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+- capybara
+modified_time: '2015-08-21T10:12:45.927-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-4768355981496259043
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/01/reload-stale-objects-in-finnicky-rails.html
+---
+
+I have had plenty of times where an rspec test was failing because an object was still showing an old value after an update. This seems to happen most often in Capybara. I know I'm not technically supposed to be checking object data in Capybara tests, just checking what's actually seen on the page, but there are some times where I need to be extra sure, or where the data being updated isn't showing on the page.<br /><br />In rspec, call <code>#reload</code> on an object if it has changed in the database in order to sync and get the most recent changes.<br /><br />NOTE: The object must have an ID, because under the hood it is just running<br /><code>object = Object.find(object.id)</code> <br /><pre><code><br />object.name # =&gt; 'Frank'<br />object.update(name: 'Tank')<br />object.name # =&gt; 'Frank'<br />object.reload<br />object.name # =&gt; 'Tank'<br /></code></pre>

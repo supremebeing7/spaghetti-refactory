@@ -1,0 +1,14 @@
+---
+layout: post
+title: Very VERY basic Vagrant commands for a n00b
+date: '2015-01-09T21:56:00.000-08:00'
+author: Mark J. Lehman
+tags:
+- devops
+- vagrant
+modified_time: '2015-08-21T10:10:31.413-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-8524462744973268571
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/01/very-very-basic-vagrant-commands-for.html
+---
+
+This is nothing that can't easily be found in the docs, but it was new to me:<br /><br />&nbsp;  <code>vagrant up</code><br /><br />This uses a Vagrantfile to start up a virtual machine (such as starting up an Ubuntu environment using VirtualBox)<br /><br />&nbsp;  <code>vagrant ssh</code><br /><br />This will SSH into the virtual machine, but first you need to ensure that SSH keys are configured properly. These can be passed in by setting this in the Vagrantfile:<br /><br />&nbsp; <code>config.ssh.forward_agent = true</code>

@@ -1,0 +1,14 @@
+---
+layout: post
+title: Format your Time the easy way with Rails locales
+date: '2015-03-29T12:16:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+modified_time: '2015-08-21T10:08:38.655-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-2534859677739005249
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/03/format-your-time-easy-way-with-rails.html
+---
+
+If you haven't ever used <code>locales</code> in Rails before, you're in for a treat. This is a super powerful feature bundled with Rails in the <a href="https://github.com/svenfuchs/rails-i18n">rails-i18n gem</a>. The <a href="http://guides.rubyonrails.org/i18n.html">Ruby on Rails guide</a> for it packs a lot of info to cover all types of scenarios, but I'm going to talk here about a couple very simple tweaks you can make to easily format your Date, Time, and Datetime objects consistently across your entire site.  <br />First, this post is going to assume your app is written in English, and the instructions that follow are written specifically for that scenario, but locales work for any language, so you just need to place your code in the proper <code>YAML</code> file.  <br />Let's say you want all of your Datetime or Time objects in your app formatted in the <code>Month Date, Year - HH:MM Meridian</code> format (i.e. June 25, 2009 - 10:24 PM). The old fashioned way is to have to use <code>.strftime('%B %d, %Y - %H:%M %p')</code>. Don't get me wrong, I love me some <a href="http://apidock.com/ruby/DateTime/strftime">strftime</a>, but I don't want to be having to type or copypasta that stuff every time. Here's what we're going to do instead:  <pre><code><br />  # config/locales/en.yml<br />  en:<br />    time:<br />      formats:<br />        full: "%B %d, %Y - %H:%M %p"<br /></code></pre> Then, in your views wherever you want your Time object (for example, <code>object.created_at</code>)to be formatted this way, instead of this:  <pre><code><br />  object.created_at.strftime('%B %d, %Y - %H:%M %p')<br /></code></pre> Do this:  <pre><code><br />  l object.created_at, format: :full<br /></code></pre> The '<code>l</code>' prefacing your object is a <code>locale</code> method, and the Time object gets passed in as an argument, with the formatting option that you want to use.   Now, if you have a couple different formats you use throughout your app, say <code>:full</code>, <code>:date_only</code>, and <code>:time_with_zone</code>, this makes it so much easier to use.   <pre><code><br />  # config/locales/en.yml<br />  en:<br />    time:<br />      formats:<br />        full: "%B %d, %Y - %H:%M %p"<br />        date_only: "%B %d, %Y"<br />        time_with_zone: "%-m/%-d/%y %-I:%M %p %Z"<br /></code></pre>  Instead of trying to remember the alphabet soup of <code>strftime</code>, it is way cooler to just call your <code>locale</code> method with the human-readable format you want.

@@ -1,0 +1,14 @@
+---
+layout: post
+title: Get easy snippets in Rails views with `truncate`
+date: '2015-03-21T12:00:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+modified_time: '2015-08-21T10:08:38.694-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-7029363739353165861
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/03/get-easy-snippets-in-rails-views-with.html
+---
+
+Silly me, when I had a Note model that I wanted to show just a snippet of the note content with a link to view the full note, I wrote three separate methods that worked in tandem to do this. Then, I found out about <code>truncate</code>:  <br /><pre><code><br />  truncate("Once upon a time in a world far far away", length: 17, separator: ' ')<br />  # =&gt; "Once upon a..."<br /><br />  truncate("Once upon a time in a world far far away", length: 17)<br />  # =&gt; "Once upon a ti..."<br /></code></pre><br />The separator option will only truncate the text at that char, so in this case, it won't break up words, it will get to 17 characters, then find the previous space (or whatever character is specified as the <code>separator</code>) and truncate there. As you can see, without the <code>separator</code> option, it counts up to 14 and adds an ellipsis to make the total character count 17.  <br /><br />There are several other options to extend this that you can check out <a href="http://api.rubyonrails.org/classes/ActionView/Helpers/TextHelper.html#method-i-truncate">in the docs</a>. NOTE: This can be used by default in Rails views because it's part of <code>ActionView::Helpers::TextHelper</code>, but must be specifically included if you want to use it elsewhere in the app.  <br /><br />So save yourself some time and trouble, don't be like me and start making up snippet methods when there's a perfectly good one already built!

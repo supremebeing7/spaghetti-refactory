@@ -1,0 +1,14 @@
+---
+layout: post
+title: Simplifying Rails views with pluralize
+date: '2015-05-28T00:46:00.000-07:00'
+author: Mark J. Lehman
+tags:
+- rails
+- ruby
+modified_time: '2015-08-21T10:08:38.690-07:00'
+blogger_id: tag:blogger.com,1999:blog-4459370175540830177.post-6506514706833930559
+blogger_orig_url: http://spaghettirefactory.blogspot.com/2015/05/simplifying-rails-views-with-pluralize.html
+---
+
+"2 User(s) been updated."<br /><br />This is a silly problem that I kept running into before I found out about <code>pluralize</code>.<br /><br />Now, instead of having to do a conditional checking for number of users and printing the line based on that number, I can do this using <a href="http://apidock.com/rails/ActionView/Helpers/TextHelper/pluralize"><code>pluralize</code> in Rails</a>:<br /><pre><code><br /></code></pre><pre><code>pluralize(@users, 'User')<br /></code></pre><br />Or, if I want to use the <a href="http://stackoverflow.com/questions/2446156/is-there-a-pluralize-function-in-ruby-not-rails">Ruby version of <code>pluralize</code></a> (or, more accurately, the ActiveSupport version):<br /><pre><code><br /></code></pre><pre><code>require 'active_support/inflector'<br />"User".pluralize(@users)<br /></code></pre><br />If <code>@users</code> is more than one, outputs "Users". If <code>@users</code> is 1, outputs "User". This is nice for when you don't want to display the number, just the pluralized word (i.e. "Users updated").
