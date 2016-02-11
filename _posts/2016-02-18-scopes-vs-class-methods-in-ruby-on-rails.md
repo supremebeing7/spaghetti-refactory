@@ -16,40 +16,31 @@ Class methods and scopes accomplish basically the same purpose, except in one pa
 
 Say that you have the following class methods on a `User` class:
 
-```
-def self.created_before(time)
-  where("created_at < ?", time) if time.present?
-end
 
-def self.active
-  where(active: true)
-end
-```
+    def self.created_before(time)
+      where("created_at < ?", time) if time.present?
+    end
+
+    def self.active
+      where(active: true)
+    end
 
 If you wanted to get active users created before 2 days ago, you could chain them together into something like this (in Rails):
 
-```
-User.created_before(2.days.ago).active
-```
+    User.created_before(2.days.ago).active
 
 No problem, right? But what if you didn't pass in a time?
 
-```
-User.created_before('').active
-```
+    User.created_before('').active
 
 Now, `created_before` returns `nil` because `time` isn't present, and when it gets to the next method in the chain, it gives you a `NoMethodError` on `NilClass`. This is where `scopes` are way cooler - they always return an `ActiveRecord::Relation` object, so they are always chainable. So, the same queries in scope form...
 
-```
-scope :created_before, ->(time) { where("created_at < ?", time) if time.present? }
-scope :active, -> { where(active: true) }
-```
+    scope :created_before, ->(time) { where("created_at < ?", time) if time.present? }
+    scope :active, -> { where(active: true) }
 
 ...throws no error on the same method chain...
 
-```
-User.created_before('').active
-```
+    User.created_before('').active
 
 It's a small difference, but an important one.
 
