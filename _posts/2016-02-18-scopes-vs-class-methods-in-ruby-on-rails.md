@@ -10,6 +10,8 @@ tags:
 - activerecord
 ---
 
+***When I first started writing this, the rails guides didn't make this distinction. I'm excited to say I made [my first contribution to Rails by adding this to the docs](https://github.com/rails/rails/pull/23606). Bangarang!***
+
 Before I learned about [`scopes` in ActiveRecord](http://guides.rubyonrails.org/active_record_querying.html#scopes), I regularly used class methods for ActiveRecord querying. When I learned `scopes` and how to use them, I thought, "Well, that's nice syntactic sugar." But turns out there's more to it than that.
 
 Class methods and scopes accomplish basically the same purpose, except in one particular case: conditionals.
@@ -43,8 +45,6 @@ Now, `created_before` returns `nil` because `time` isn't present, and when it ge
     User.created_before('').active
 
 It's a small difference, but an important one.
-
-When I first started writing this, the rails guides didn't make this distinction. I'm excited to say I made [my first contribution to Rails by adding this to the docs](https://github.com/rails/rails/pull/23606). Bangarang!
 
 *Kudos to [plataformatec](http://blog.plataformatec.com.br/2013/02/active-record-scopes-vs-class-methods/) for a great writeup on the subject.*
 
