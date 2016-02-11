@@ -30,3 +30,4 @@ github:
 gems:
   - jekyll-paginate
   - jekyll-gist
+  - jekyll-coffeescript
