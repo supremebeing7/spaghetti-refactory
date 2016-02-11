@@ -44,7 +44,7 @@ Now, `created_before` returns `nil` because `time` isn't present, and when it ge
 
 It's a small difference, but an important one.
 
-As of this writing, the rails guides don't make this distinction. I'm excited to say I have [my first Pull Request into Rails to add it to the docs](https://github.com/rails/rails/pull/23606). Hopefully it will happen!
+When I first started writing this, the rails guides didn't make this distinction. I'm excited to say I made [my first contribution to Rails by adding this to the docs](https://github.com/rails/rails/pull/23606). Bangarang!
 
 *Kudos to [plataformatec](http://blog.plataformatec.com.br/2013/02/active-record-scopes-vs-class-methods/) for a great writeup on the subject.*
 
