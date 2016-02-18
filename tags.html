@@ -3,16 +3,16 @@ layout: page
 title: Tags
 ---
 
-<ul class="tags">
-{% for tag_pair in site.tags %}
-  {% assign tag = tag_pair | first %}
-  {% assign posts = tag_pair | last %}
-  <li>
-    <a class="tag" href="{{ site.baseurl }}/tags#{{ tag | downcase | replace:" ","-" }}">
-      {{ tag }}
-    </a>
-  </li>
-{% endfor %}
+<ul class="tag-cloud">
+  {% for tag_pair in site.tags %}
+    {% assign tag = tag_pair | first %}
+    {% assign posts = tag_pair | last %}
+    <li style="font-size: {{ posts | size | times: 150 | divided_by: site.tags.size | plus: 90  }}%">
+      <a href="#{{ tag | downcase | replace:" ","-" }}">
+        {{ tag }}
+      </a>
+    </li>
+  {% endfor %}
 </ul>
 
 {% for tag_pair in site.tags %}
