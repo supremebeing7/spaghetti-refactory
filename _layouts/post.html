@@ -13,7 +13,7 @@ layout: default
   <ul class="tag-list">
     {% for tag in page.tags %}
       <li>
-        <a class="tag_list_link" href="/tag/{{ tag }}">{{ tag }}</a>
+        <a class="tag_list_link" href="{{ site.baseurl }}/tags#{{ tag | downcase | replace:" ","-" }}">{{ tag }}</a>
       </li>
     {% endfor %}
   </ul>
