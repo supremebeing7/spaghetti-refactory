@@ -1,0 +1,17 @@
+---
+layout: page
+title: Search
+---
+
+<form action="get" id="site_search">
+  <center>
+    <input style="font-size:20px;" type="text" id="search_box">
+    <input style="font-size:20px;" type="submit" value="Go!">
+  </center>
+</form>
+
+<br />
+
+<ul id="search_results"></ul>
+<script src="{{ site.baseurl }}/assets/javascripts/lunr.min.js"></script>
+<script src="{{ site.baseurl }}/assets/javascripts/search.js"></script>
