@@ -76,3 +76,22 @@ tbody tr:nth-child(odd) td,
 tbody tr:nth-child(odd) th {
   background-color: #f9f9f9;
 }
+
+ul.nav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  a:hover {
+    text-decoration: none;
+  }
+
+  li {
+    display: inline;
+    padding: 1rem;
+
+    &:hover {
+      background: #f9f2ec;
+    }
+  }
+}

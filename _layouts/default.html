@@ -13,6 +13,12 @@
           </a>
           <small style="float: right;">{{ site.tagline }}</small>
         </h3>
+        <ul class="nav">
+          <a href="{{ site.baseurl }}/"><li>Home</li></a>
+          <a href="{{ site.baseurl }}/search"><li>Search</li></a>
+          <a href="{{ site.baseurl }}/tags"><li>Tags</li></a>
+          <a href="{{ site.baseurl }}/about"><li>About</li></a>
+        </ul>
       </header>
 
       <main>
@@ -21,7 +27,7 @@
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="{{ site.time | date_to_xmlschema }}">{{ site.time | date: '%Y' }}</time>. All rights reserved.
+          &copy; Mark J. Lehman <time datetime="{{ site.time | date_to_xmlschema }}">{{ site.time | date: '%Y' }}</time>. All rights reserved.
         </small>
       </footer>
     </div>
