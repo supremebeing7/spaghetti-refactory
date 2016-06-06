@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Merging and reverse merging in Ruby on Rails
-date: '2016-06-06T08:30:00.000-08:00'
+date: '2016-06-06T08:00:00.000-08:00'
 author: Mark J. Lehman
 tags:
 - ruby
@@ -28,4 +28,4 @@ It does... exactly what it sounds like.
       if_you_have: "half a brain"
     }
 
-Kinda like `[Array#unshift](http://ruby-doc.org/core-2.0.0/Array.html#method-i-unshift)`.
+Kinda like [`Array#unshift`](http://ruby-doc.org/core-2.0.0/Array.html#method-i-unshift).
