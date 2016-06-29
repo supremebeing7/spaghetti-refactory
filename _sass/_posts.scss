@@ -59,3 +59,17 @@
     }
   }
 }
+
+// CSS demos
+h1.transitions-demo {
+   color: black;
+   background: white;
+   transition: color 1s, background 3s ease-in-out;
+   -moz-transition: color 1s, background 3s ease-in-out;
+   -webkit-transition: color 1s, background 3s ease-in-out;
+
+   &:hover {
+     color: white;
+     background: red;
+   }
+ }
