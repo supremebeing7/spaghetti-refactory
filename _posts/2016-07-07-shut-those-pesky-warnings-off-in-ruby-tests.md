@@ -20,12 +20,12 @@ Niftily enough, there's an envar I can set on each spec run that will silence th
 
     RUBYOPT="-W0" rspec
 
-(Tested working on my machine runniny Ruby 2.2.x, and according to [this StackOverflow post](http://stackoverflow.com/questions/5591509/suppress-ruby-warnings-when-running-specs/28098594#28098594), it also works on 2.1.x, 2.14.x, and 2.3.x.)
+(Tested working on my machine running Ruby 2.2.x, and according to [this StackOverflow post](http://stackoverflow.com/questions/5591509/suppress-ruby-warnings-when-running-specs/28098594#28098594), it also works on 2.1.x, 2.14.x, and 2.3.x.)
 
 Great, it works! But... how?
 
 In my Googling, I found little info about `RUBYOPT`. [One documentation page](http://www.tutorialspoint.com/ruby/ruby_environment_variables.htm) defined it thus:
-> Command-line options passed to Ruby interpreter. Ignored in taint mode (Where $SAFE is greater than 0).
+<blockquote> Command-line options passed to Ruby interpreter. Ignored in taint mode (Where $SAFE is greater than 0).</blockquote>
 
 Okay... Kind of helpful. So, it seems to me that whatever is stored in `RUBYOPT` gets run as a flag on the Ruby program (in my case, `rspec`).
 
