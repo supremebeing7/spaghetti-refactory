@@ -27,8 +27,8 @@ version:             2.0.0
 github:
   repo:              https://github.com/supremebeing7/spaghetti-refactory
 
-# Gems
-gems:
+# Plugins
+plugins:
   - jekyll-paginate
   - jekyll-gist
   - jekyll-coffeescript
