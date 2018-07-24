@@ -7,6 +7,7 @@ tagline:             Established 2015
 url:                 http://supremebeing7.github.io/spaghetti-refactory
 paginate:            1
 baseurl:             /spaghetti-refactory
+future:              false
 
 # Assets
 #
@@ -26,8 +27,8 @@ version:             2.0.0
 github:
   repo:              https://github.com/supremebeing7/spaghetti-refactory
 
-# Gems
-gems:
+# Plugins
+plugins:
   - jekyll-paginate
   - jekyll-gist
   - jekyll-coffeescript
