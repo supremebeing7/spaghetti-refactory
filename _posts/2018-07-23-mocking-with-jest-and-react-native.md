@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Mocking with Jest and React Native
+date: '2018-07-23T08:00:00.000-08:00'
 author: Mark J. Lehman
 tags:
 - react native
